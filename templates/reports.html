@@ -6,35 +6,53 @@
     <style>
         :root {
             --tut-blue: #0054a6;
+            --tut-blue-light: #1e6ab8;
             --tut-yellow: #ffcc00;
             --tut-red: #ed1c24;
+            --tut-red-light: #f54747;
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f4f4; }
+        body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; background: #f8f9fa; color: #2c3e50; }
 
         .user-bar {
             text-align: right;
             background: #fff;
             color: var(--tut-blue);
-            font-weight: bold;
-            padding: 10px 30px;
-            border-bottom: 1px solid #ddd;
+            font-weight: 600;
+            padding: 12px 30px;
+            border-bottom: 1px solid #e8eef5;
             font-size: 0.9em;
+        }
+
+        .user-bar a {
+            color: var(--tut-red);
+            text-decoration: none;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .user-bar a:hover {
+            color: var(--tut-red-light);
+            text-decoration: underline;
         }
 
         .navbar {
             background: var(--tut-blue);
             color: white;
-            padding: 15px 30px;
+            padding: 18px 30px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             border-bottom: 5px solid var(--tut-yellow);
+            box-shadow: var(--shadow-md);
         }
 
-        .navbar-brand { font-size: 1.5em; font-weight: bold; }
-        .navbar-campus { font-size: 0.9em; }
+        .navbar-brand { font-size: 1.5em; font-weight: 700; }
+        .navbar-campus { font-size: 0.9em; opacity: 0.95; }
 
         .navbar-menu {
             display: flex;
@@ -45,44 +63,51 @@
         .navbar-menu a {
             color: white;
             text-decoration: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-            transition: background 0.3s;
+            padding: 8px 14px;
+            border-radius: 6px;
+            transition: var(--transition);
+            font-weight: 500;
         }
 
         .navbar-menu a:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-1px);
         }
 
         .navbar-menu a.active {
             background: var(--tut-yellow);
             color: var(--tut-blue);
-            font-weight: bold;
+            font-weight: 700;
         }
 
-        .container { max-width: 1400px; margin: 20px auto; padding: 20px; }
+        .container { max-width: 1400px; margin: 30px auto; padding: 30px; }
 
         .page-title {
             color: var(--tut-blue);
-            margin-bottom: 30px;
+            margin-bottom: 35px;
             border-bottom: 3px solid var(--tut-yellow);
-            padding-bottom: 15px;
+            padding-bottom: 18px;
+            font-size: 2em;
+            font-weight: 600;
+            letter-spacing: -0.5px;
         }
 
         .report-section {
             background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+            padding: 28px;
+            border-radius: 10px;
+            box-shadow: var(--shadow-sm);
+            margin-bottom: 28px;
             border-top: 4px solid var(--tut-blue);
+            border: 1px solid #e8eef5;
         }
 
         .report-title {
             color: var(--tut-blue);
-            font-size: 1.3em;
-            margin-bottom: 20px;
-            font-weight: bold;
+            font-size: 1.35em;
+            margin-bottom: 24px;
+            font-weight: 600;
+            letter-spacing: -0.3px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -90,8 +115,8 @@
 
         .filter-group {
             display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
+            gap: 16px;
+            margin-bottom: 24px;
             flex-wrap: wrap;
             align-items: flex-end;
         }
@@ -99,142 +124,188 @@
         .filter-item {
             display: flex;
             flex-direction: column;
+            flex: 1;
+            min-width: 200px;
         }
 
         label {
             color: var(--tut-blue);
-            font-weight: bold;
+            font-weight: 600;
             margin-bottom: 8px;
-            font-size: 0.95em;
+            font-size: 0.9em;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
 
         input, select {
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 4px;
+            padding: 12px 14px;
+            border: 2px solid #d5dce3;
+            border-radius: 6px;
             font-size: 0.95em;
-            min-width: 200px;
+            transition: var(--transition);
+            background: #fafbfc;
+            font-family: inherit;
         }
 
         input:focus, select:focus {
             outline: none;
             border-color: var(--tut-blue);
-            box-shadow: 0 0 4px rgba(0, 84, 166, 0.2);
+            background: white;
+            box-shadow: 0 0 0 3px rgba(0, 84, 166, 0.1);
         }
 
         .btn {
-            padding: 10px 20px;
+            padding: 12px 26px;
             border: none;
-            border-radius: 4px;
+            border-radius: 6px;
             cursor: pointer;
-            font-weight: bold;
-            font-size: 0.95em;
-            transition: background 0.3s;
+            font-weight: 600;
+            font-size: 0.85em;
+            transition: var(--transition);
+            text-transform: uppercase;
+            letter-spacing: 0.4px;
         }
 
         .btn-primary {
             background: var(--tut-blue);
             color: white;
+            box-shadow: var(--shadow-sm);
         }
 
         .btn-primary:hover {
-            background: #003d7a;
+            background: var(--tut-blue-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary {
+            background: #95a3b3;
+            color: white;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-secondary:hover {
+            background: #7a8391;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
 
         .btn-export {
             background: #28a745;
             color: white;
+            box-shadow: var(--shadow-sm);
         }
 
         .btn-export:hover {
             background: #218838;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
+            padding: 24px;
+            border-radius: 10px;
+            border: 1px solid #e8eef5;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .stat-label {
+            color: #7f8c8d;
+            font-size: 0.85em;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        .stat-value {
+            color: var(--tut-blue);
+            font-size: 1.8em;
+            font-weight: 700;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 15px;
             font-size: 0.9em;
         }
 
         th {
             background: var(--tut-blue);
             color: white;
-            padding: 12px;
+            padding: 14px 12px;
             text-align: left;
-            font-weight: bold;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+            font-size: 0.85em;
         }
 
         td {
-            padding: 12px;
-            border-bottom: 1px solid #eee;
+            padding: 13px 12px;
+            border-bottom: 1px solid #e8eef5;
         }
 
-        tr:hover {
-            background: #f9f9f9;
+        tbody tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        tbody tr:hover {
+            background: #f0f4f8;
+            transition: background 0.2s ease;
         }
 
         .empty-message {
             text-align: center;
-            padding: 40px;
-            color: #999;
+            padding: 48px 20px;
+            color: #95a3b3;
+            font-size: 0.95em;
         }
 
-        .summary-row {
-            background: #f0f0f0;
-            font-weight: bold;
-            color: var(--tut-blue);
-        }
-
-        .summary-stat {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .stat-box {
-            background: #f0f0f0;
-            padding: 15px;
-            border-radius: 4px;
-            border-left: 4px solid var(--tut-blue);
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 0.85em;
-        }
-
-        .stat-value {
-            color: var(--tut-blue);
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-top: 5px;
-        }
-
-        .status-low {
-            color: var(--tut-red);
-            font-weight: bold;
-            background: #f8d7da;
-            padding: 4px 8px;
-            border-radius: 4px;
-            display: inline-block;
-        }
-
-        @media (max-width: 768px) {
+        @media (max-width: 1024px) {
             .filter-group {
                 flex-direction: column;
             }
 
-            input, select {
-                width: 100%;
-                min-width: auto;
+            .filter-item {
+                min-width: 100%;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+                margin: 16px auto;
+            }
+
+            .page-title {
+                font-size: 1.6em;
+            }
+
+            .report-section {
+                padding: 20px;
             }
 
             .report-title {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 10px;
+                gap: 12px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
             }
         }
     </style>
@@ -242,7 +313,7 @@
 <body>
 
 <div class="user-bar">
-    Logged in as: {{ user }} | <a href="/logout" style="color: var(--tut-red); text-decoration: none;">Logout</a>
+    Logged in as: {{ user }} | <a href="/logout">Logout</a>
 </div>
 
 <div class="navbar">
@@ -261,258 +332,160 @@
 </div>
 
 <div class="container">
-    <h1 class="page-title">📊 Reports & Analysis</h1>
+    <h1 class="page-title">📊 Reports & Analytics</h1>
 
-    <!-- REPORT 1: DAILY SALES REPORT -->
+    <!-- STATISTICS OVERVIEW -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">Total Sales</div>
+            <div class="stat-value">R{{ "%.2f"|format(total_sales or 0) }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Total Inventory Value</div>
+            <div class="stat-value">R{{ "%.2f"|format(total_inventory_value or 0) }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Total Credit Owed</div>
+            <div class="stat-value">R{{ "%.2f"|format(total_credit_owed or 0) }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Active Customers</div>
+            <div class="stat-value">{{ num_customers or 0 }}</div>
+        </div>
+    </div>
+
+    <!-- SALES REPORT -->
     <div class="report-section">
         <div class="report-title">
-            💳 Daily Sales Report
-            <div style="display: flex; gap: 10px;">
-                <a href="/reports/export-sales-pdf?date={{ report_date or today }}" class="btn btn-export" style="background: #dc3545;">📄 PDF</a>
-            </div>
+            💰 Sales Report
+            <a href="/reports/sales/export" class="btn btn-export" style="text-decoration:none;">📥 Export PDF</a>
         </div>
 
         <div class="filter-group">
             <div class="filter-item">
-                <label for="sales_date">Select Date:</label>
-                <input type="date" id="sales_date" value="{{ report_date or today }}" onchange="filterSales()">
+                <label for="sales-start-date">Start Date</label>
+                <input type="date" id="sales-start-date">
             </div>
+            <div class="filter-item">
+                <label for="sales-end-date">End Date</label>
+                <input type="date" id="sales-end-date">
+            </div>
+            <button onclick="filterSalesReport()" class="btn btn-primary" style="align-self: flex-end;">🔍 Filter</button>
         </div>
 
-        {% if daily_sales %}
+        {% if sales_data %}
         <table>
             <thead>
                 <tr>
-                    <th>Sale ID</th>
+                    <th>Date</th>
                     <th>Product</th>
-                    <th>Cashier</th>
                     <th>Quantity</th>
-                    <th>Total Amount</th>
-                    <th>Timestamp</th>
+                    <th>Amount</th>
+                    <th>Cashier</th>
                 </tr>
             </thead>
             <tbody>
-                {% set total_sales = 0 %}
-                {% for sale in daily_sales %}
+                {% for sale in sales_data %}
                 <tr>
-                    <td>{{ sale.sale_id }}</td>
-                    <td>{{ sale.product_name or 'Unknown' }}</td>
-                    <td>{{ sale.full_name or 'Unknown' }}</td>
+                    <td>{{ sale.sale_date.strftime('%Y-%m-%d') if sale.sale_date else sale.sale_timestamp.strftime('%Y-%m-%d') }}</td>
+                    <td><strong>{{ sale.product_name }}</strong></td>
                     <td>{{ sale.quantity_sold }}</td>
-                    <td>R{{ "%.2f"|format(sale.total_amount or 0) }}</td>
-                    <td>{{ sale.sale_timestamp.strftime('%H:%M:%S') if sale.sale_timestamp else 'N/A' }}</td>
+                    <td>R{{ "%.2f"|format(sale.total_amount) }}</td>
+                    <td>{{ sale.full_name }}</td>
                 </tr>
-                {% set total_sales = total_sales + (sale.total_amount or 0) %}
                 {% endfor %}
-                <tr class="summary-row">
-                    <td colspan="4"><strong>TOTAL SALES</strong></td>
-                    <td><strong>R{{ "%.2f"|format(total_sales) }}</strong></td>
-                    <td></td>
-                </tr>
             </tbody>
         </table>
         {% else %}
-        <div class="empty-message">
-            <p>No sales recorded for {{ report_date or 'today' }}</p>
-        </div>
+        <div class="empty-message">No sales data available.</div>
         {% endif %}
     </div>
 
-    <!-- REPORT 2: LOW STOCK REPORT -->
+    <!-- INVENTORY REPORT -->
     <div class="report-section">
-        <div class="report-title">⚠️ Low Stock Report</div>
-
-        <div class="filter-group">
-            <div class="filter-item">
-                <label for="stock_category">Filter by Category:</label>
-                <select id="stock_category" onchange="filterLowStock()">
-                    <option value="">All Categories</option>
-                    {% for cat in categories %}
-                    <option value="{{ cat }}" {% if selected_category == cat %}selected{% endif %}>{{ cat }}</option>
-                    {% endfor %}
-                </select>
-            </div>
+        <div class="report-title">
+            📦 Inventory Report
+            <a href="/reports/inventory/export" class="btn btn-export" style="text-decoration:none;">📥 Export PDF</a>
         </div>
 
-        {% if low_stock %}
+        {% if inventory_data %}
         <table>
             <thead>
                 <tr>
                     <th>Product Name</th>
-                    <th>Category</th>
-                    <th>Supplier</th>
-                    <th>Current Stock</th>
-                    <th>Reorder Level</th>
-                    <th>Status</th>
+                    <th>Stock Quantity</th>
+                    <th>Cost Price</th>
+                    <th>Selling Price</th>
+                    <th>Total Value</th>
                 </tr>
             </thead>
             <tbody>
-                {% for product in low_stock %}
+                {% for item in inventory_data %}
                 <tr>
-                    <td><strong>{{ product.product_name }}</strong></td>
-                    <td>{{ product.category or 'N/A' }}</td>
-                    <td>{{ product.supplier_name or 'None' }}</td>
-                    <td>{{ product.stock_quantity }}</td>
-                    <td>{{ product.reorder_level or 10 }}</td>
-                    <td><span class="status-low">🚨 LOW STOCK</span></td>
+                    <td><strong>{{ item.product_name }}</strong></td>
+                    <td>{{ item.stock_quantity }} units</td>
+                    <td>R{{ "%.2f"|format(item.cost_price) }}</td>
+                    <td>R{{ "%.2f"|format(item.selling_price) }}</td>
+                    <td>R{{ "%.2f"|format(item.stock_quantity * item.cost_price) }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <div class="summary-stat">
-            <div class="stat-box">
-                <div class="stat-label">Total Low Stock Items</div>
-                <div class="stat-value">{{ low_stock|length }}</div>
-            </div>
-        </div>
         {% else %}
-        <div class="empty-message">
-            <p>All products are well-stocked!</p>
-        </div>
+        <div class="empty-message">No inventory data available.</div>
         {% endif %}
     </div>
 
-    <!-- REPORT 3: SUPPLIER STOCK RECEIPTS REPORT -->
+    <!-- CREDIT REPORT -->
     <div class="report-section">
-        <div class="report-title">📦 Supplier Stock Receipts Report</div>
-
-        <div class="filter-group">
-            <div class="filter-item">
-                <label for="receipts_supplier">Filter by Supplier:</label>
-                <select id="receipts_supplier" onchange="filterReceipts()">
-                    <option value="">All Suppliers</option>
-                    {% for supplier in suppliers %}
-                    <option value="{{ supplier.supplier_id }}" {% if selected_supplier|string == supplier.supplier_id|string %}selected{% endif %}>
-                        {{ supplier.supplier_name }}
-                    </option>
-                    {% endfor %}
-                </select>
-            </div>
+        <div class="report-title">
+            💳 Credit Status Report
         </div>
 
-        {% if stock_receipts %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Receipt ID</th>
-                    <th>Supplier</th>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Received By</th>
-                    <th>Date/Time</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% set total_qty = 0 %}
-                {% for receipt in stock_receipts %}
-                <tr>
-                    <td>{{ receipt.receipt_id }}</td>
-                    <td>{{ receipt.supplier_name or 'Unknown' }}</td>
-                    <td>{{ receipt.product_name or 'Unknown' }}</td>
-                    <td>{{ receipt.quantity_received }}</td>
-                    <td>{{ receipt.full_name or 'Unknown' }}</td>
-                    <td>{{ receipt.received_date.strftime('%Y-%m-%d %H:%M:%S') if receipt.received_date else 'N/A' }}</td>
-                </tr>
-                {% set total_qty = total_qty + (receipt.quantity_received or 0) %}
-                {% endfor %}
-                <tr class="summary-row">
-                    <td colspan="3"><strong>TOTAL ITEMS RECEIVED</strong></td>
-                    <td><strong>{{ total_qty }}</strong></td>
-                    <td colspan="2"></td>
-                </tr>
-            </tbody>
-        </table>
-        {% else %}
-        <div class="empty-message">
-            <p>No stock receipts found</p>
-        </div>
-        {% endif %}
-    </div>
-
-    <!-- REPORT 4: CREDIT CUSTOMER BALANCE REPORT -->
-    <div class="report-section">
-        <div class="report-title">💰 Credit Customer Balance Report</div>
-
-        <div class="filter-group">
-            <div class="filter-item">
-                <label for="credit_customer">Filter by Customer:</label>
-                <select id="credit_customer" onchange="filterCredit()">
-                    <option value="">All Customers</option>
-                    {% for customer in customers %}
-                    <option value="{{ customer.customer_id }}" {% if selected_customer|string == customer.customer_id|string %}selected{% endif %}>
-                        {{ customer.full_name }} (R{{ "%.2f"|format(customer.current_balance) }})
-                    </option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-
-        {% if credit_report %}
+        {% if credit_data %}
         <table>
             <thead>
                 <tr>
                     <th>Customer Name</th>
-                    <th>Phone</th>
-                    <th>Credit Limit</th>
-                    <th>Current Balance</th>
-                    <th>Available Credit</th>
-                    <th>Transactions</th>
+                    <th>Max Limit</th>
+                    <th>Total Owed</th>
+                    <th>Balance Available</th>
+                    <th>Status</th>
                 </tr>
             </thead>
             <tbody>
-                {% for customer in credit_report %}
+                {% for credit in credit_data %}
                 <tr>
-                    <td><strong>{{ customer.full_name }}</strong></td>
-                    <td>{{ customer.phone or 'N/A' }}</td>
-                    <td>R{{ "%.2f"|format(customer.credit_limit) }}</td>
-                    <td>R{{ "%.2f"|format(customer.current_balance) }}</td>
-                    <td>R{{ "%.2f"|format(customer.credit_limit - customer.current_balance) }}</td>
-                    <td>{{ customer.transaction_count or 0 }}</td>
+                    <td><strong>{{ credit.customer_name }}</strong></td>
+                    <td>R{{ "%.2f"|format(credit.max_credit_limit) }}</td>
+                    <td>R{{ "%.2f"|format(credit.total_owed or 0) }}</td>
+                    <td>R{{ "%.2f"|format((credit.max_credit_limit - (credit.total_owed or 0)) if (credit.max_credit_limit - (credit.total_owed or 0)) > 0 else 0) }}</td>
+                    <td>
+                        {% if (credit.total_owed or 0) > credit.max_credit_limit %}
+                        <span style="background: #f8d7da; color: #b8181f; padding: 6px 12px; border-radius: 4px; font-size: 0.8em; font-weight: 600; text-transform: uppercase;">Over Limit</span>
+                        {% elif (credit.total_owed or 0) > (credit.max_credit_limit * 0.8) %}
+                        <span style="background: #fff3cd; color: #856404; padding: 6px 12px; border-radius: 4px; font-size: 0.8em; font-weight: 600; text-transform: uppercase;">Nearing Limit</span>
+                        {% else %}
+                        <span style="background: #d4edda; color: #1e7e34; padding: 6px 12px; border-radius: 4px; font-size: 0.8em; font-weight: 600; text-transform: uppercase;">Good</span>
+                        {% endif %}
+                    </td>
                 </tr>
                 {% endfor %}
-                <tr class="summary-row">
-                    <td colspan="3"><strong>TOTAL OUTSTANDING</strong></td>
-                    <td colspan="3"><strong>R{{ "%.2f"|format(total_outstanding) }}</strong></td>
-                </tr>
             </tbody>
         </table>
-        <div class="summary-stat">
-            <div class="stat-box">
-                <div class="stat-label">Total Customers</div>
-                <div class="stat-value">{{ credit_report|length }}</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-label">Total Outstanding Balance</div>
-                <div class="stat-value">R{{ "%.2f"|format(total_outstanding) }}</div>
-            </div>
-        </div>
         {% else %}
-        <div class="empty-message">
-            <p>No credit customers found</p>
-        </div>
+        <div class="empty-message">No credit data available.</div>
         {% endif %}
     </div>
 </div>
 
 <script>
-function filterSales() {
-    const date = document.getElementById('sales_date').value;
-    window.location.href = `/reports/daily-sales?date=${date}`;
-}
-
-function filterLowStock() {
-    const category = document.getElementById('stock_category').value;
-    window.location.href = `/reports/low-stock?category=${category}`;
-}
-
-function filterReceipts() {
-    const supplierId = document.getElementById('receipts_supplier').value;
-    window.location.href = `/reports/stock-receipts?supplier_id=${supplierId}`;
-}
-
-function filterCredit() {
-    const customerId = document.getElementById('credit_customer').value;
-    window.location.href = `/reports/credit-balances?customer_id=${customerId}`;
+function filterSalesReport() {
+    const startDate = document.getElementById('sales-start-date').value;
+    const endDate = document.getElementById('sales-end-date').value;
+    if (startDate && endDate) {
+        window.location.href = `/reports/sales?start_date=${startDate}&end_date=${endDate}`;
+    }
 }
 </script>
 
