@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sales/POS | Ezasekasi Spaza System</title>
+    <style>
+        :root {
+            --tut-blue: #0054a6;
+            --tut-yellow: #ffcc00;
+            --tut-red: #ed1c24;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f4f4f4; }
+
+        .user-bar {
+            text-align: right;
+            background: #fff;
+            color: var(--tut-blue);
+            font-weight: bold;
+            padding: 10px 30px;
+            border-bottom: 1px solid #ddd;
+            font-size: 0.9em;
+        }
+
+        .navbar {
+            background: var(--tut-blue);
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 5px solid var(--tut-yellow);
+        }
+
+        .navbar-brand { font-size: 1.5em; font-weight: bold; }
+        .navbar-campus { font-size: 0.9em; }
+
+        .navbar-menu {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .navbar-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            transition: background 0.3s;
+        }
+
+        .navbar-menu a:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .navbar-menu a.active {
+            background: var(--tut-yellow);
+            color: var(--tut-blue);
+            font-weight: bold;
+        }
+
+        .container { max-width: 1400px; margin: 20px auto; padding: 20px; }
+
+        .page-title {
+            color: var(--tut-blue);
+            margin-bottom: 30px;
+            border-bottom: 3px solid var(--tut-yellow);
+            padding-bottom: 15px;
+        }
+
+        .alert {
+            padding: 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            border-left: 5px solid;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border-left-color: #28a745;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border-left-color: var(--tut-red);
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .form-section {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-top: 4px solid var(--tut-blue);
+        }
+
+        .form-title {
+            color: var(--tut-blue);
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        label {
+            color: var(--tut-blue);
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 0.95em;
+        }
+
+        input, select {
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.95em;
+            transition: border-color 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--tut-blue);
+            box-shadow: 0 0 4px rgba(0, 84, 166, 0.2);
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.95em;
+            transition: background 0.3s;
+        }
+
+        .btn-primary {
+            background: var(--tut-blue);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-primary:hover {
+            background: #003d7a;
+        }
+
+        .btn-reset {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-reset:hover {
+            background: #5a6268;
+        }
+
+        .summary-box {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .summary-item:last-child {
+            border-bottom: none;
+        }
+
+        .summary-label {
+            color: var(--tut-blue);
+            font-weight: bold;
+        }
+
+        .summary-value {
+            color: #333;
+            font-size: 1.1em;
+        }
+
+        .table-section {
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .table-title {
+            color: var(--tut-blue);
+            font-size: 1.3em;
+            margin-bottom: 20px;
+            font-weight: bold;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9em;
+        }
+
+        th {
+            background: var(--tut-blue);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+        }
+
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        tr:hover {
+            background: #f9f9f9;
+        }
+
+        .empty-message {
+            text-align: center;
+            padding: 40px;
+            color: #999;
+        }
+
+        .required {
+            color: var(--tut-red);
+        }
+
+        .product-info {
+            font-size: 0.9em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="user-bar">
+    Logged in as: {{ user }} | <a href="/logout" style="color: var(--tut-red); text-decoration: none;">Logout</a>
+</div>
+
+<div class="navbar">
+    <div>
+        <div class="navbar-brand">EZASEKASI SPAZA SHOP</div>
+        <div class="navbar-campus">Tshwane University of Technology | Emalahleni</div>
+    </div>
+    <ul class="navbar-menu">
+        <li><a href="/">Dashboard</a></li>
+        <li><a href="/products">Products/Inventory</a></li>
+        <li><a href="/sales" class="active">Sales/POS</a></li>
+        <li><a href="/suppliers">Suppliers</a></li>
+        <li><a href="/credit-customers">Credit Customers</a></li>
+        <li><a href="/reports">Reports</a></li>
+    </ul>
+</div>
+
+<div class="container">
+    <h1 class="page-title">💳 Sales / Point of Sale (POS)</h1>
+
+    {% if success %}
+    <div class="alert alert-success">
+        <strong>✓ Success:</strong> {{ success }}
+    </div>
+    {% endif %}
+
+    {% if error %}
+    <div class="alert alert-error">
+        <strong>✗ Error:</strong> {{ error }}
+    </div>
+    {% endif %}
+
+    <div class="grid-2">
+        <!-- SALES FORM SECTION -->
+        <div>
+            <div class="form-section">
+                <div class="form-title">➕ Record Sale</div>
+                <form method="POST" action="/sales/add">
+                    <div class="form-group">
+                        <label for="product_id">Select Product <span class="required">*</span></label>
+                        <select id="product_id" name="product_id" required onchange="updatePrice()">
+                            <option value="">-- Select Product --</option>
+                            {% for product in products %}
+                            <option value="{{ product.product_id }}" data-price="{{ product.selling_price }}" data-stock="{{ product.stock_quantity }}">
+                                {{ product.product_name }} (R{{ "%.2f"|format(product.selling_price) }})
+                            </option>
+                            {% endfor %}
+                        </select>
+                        <div class="product-info" id="product-info"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="quantity">Quantity <span class="required">*</span></label>
+                        <input type="number" id="quantity" name="quantity" min="1" required placeholder="0" onchange="calculateTotal()">
+                    </div>
+
+                    <div class="button-group">
+                        <button type="submit" class="btn btn-primary">💰 Process Sale</button>
+                        <button type="reset" class="btn btn-reset">Clear</button>
+                    </div>
+                </form>
+            </div>
+
+            <!-- SALE SUMMARY -->
+            <div class="summary-box" id="summary-box" style="display:none;">
+                <div class="form-title">📋 Sale Summary</div>
+                <div class="summary-item">
+                    <span class="summary-label">Product:</span>
+                    <span class="summary-value" id="summary-product">-</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Unit Price:</span>
+                    <span class="summary-value" id="summary-price">-</span>
+                </div>
+                <div class="summary-item">
+                    <span class="summary-label">Quantity:</span>
+                    <span class="summary-value" id="summary-quantity">-</span>
+                </div>
+                <div class="summary-item" style="border-bottom: 3px solid var(--tut-yellow); background: #f9f9f9; padding: 10px; margin: 10px 0;">
+                    <span class="summary-label">Total Amount:</span>
+                    <span class="summary-value" style="color: var(--tut-blue); font-size: 1.3em;" id="summary-total">-</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- RECENT SALES -->
+        <div>
+            <div class="table-section">
+                <div class="table-title">📊 Recent Sales</div>
+                {% if sales %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Cashier</th>
+                            <th>Qty</th>
+                            <th>Amount</th>
+                            <th>Time</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sale in sales %}
+                        <tr>
+                            <td><strong>{{ sale.product_name }}</strong></td>
+                            <td>{{ sale.full_name }}</td>
+                            <td>{{ sale.quantity_sold }}</td>
+                            <td>R{{ "%.2f"|format(sale.total_amount) }}</td>
+                            <td>{{ sale.sale_timestamp.strftime('%H:%M:%S') if sale.sale_timestamp else 'N/A' }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% else %}
+                <div class="empty-message">
+                    <p>No sales recorded yet.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function updatePrice() {
+    const select = document.getElementById('product_id');
+    const selected = select.options[select.selectedIndex];
+    const price = selected.getAttribute('data-price');
+    const stock = selected.getAttribute('data-stock');
+    const productInfo = document.getElementById('product-info');
+
+    if (price && stock) {
+        productInfo.innerHTML = `<strong>Available:</strong> ${stock} units | <strong>Price:</strong> R${parseFloat(price).toFixed(2)}`;
+    } else {
+        productInfo.innerHTML = '';
+    }
+
+    calculateTotal();
+}
+
+function calculateTotal() {
+    const select = document.getElementById('product_id');
+    const selected = select.options[select.selectedIndex];
+    const price = parseFloat(selected.getAttribute('data-price') || 0);
+    const productName = selected.text || '-';
+    const quantity = parseInt(document.getElementById('quantity').value || 0);
+
+    const summaryBox = document.getElementById('summary-box');
+
+    if (quantity > 0 && price > 0) {
+        const total = quantity * price;
+        document.getElementById('summary-product').textContent = productName.split(' (')[0];
+        document.getElementById('summary-price').textContent = 'R' + price.toFixed(2);
+        document.getElementById('summary-quantity').textContent = quantity;
+        document.getElementById('summary-total').textContent = 'R' + total.toFixed(2);
+        summaryBox.style.display = 'block';
+    } else {
+        summaryBox.style.display = 'none';
+    }
+}
+</script>
+
+</body>
+</html>
