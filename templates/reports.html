@@ -292,7 +292,6 @@
                 </tr>
             </thead>
             <tbody>
-                {% set total_sales = 0 %}
                 {% for sale in daily_sales %}
                 <tr>
                     <td>{{ sale.sale_id }}</td>
@@ -302,11 +301,10 @@
                     <td>R{{ "%.2f"|format(sale.total_amount or 0) }}</td>
                     <td>{{ sale.sale_timestamp.strftime('%H:%M:%S') if sale.sale_timestamp else 'N/A' }}</td>
                 </tr>
-                {% set total_sales = total_sales + (sale.total_amount or 0) %}
                 {% endfor %}
                 <tr class="summary-row">
                     <td colspan="4"><strong>TOTAL SALES</strong></td>
-                    <td><strong>R{{ "%.2f"|format(total_sales) }}</strong></td>
+                    <td><strong>R{{ "%.2f"|format(daily_sales | map(attribute='total_amount') | map('float') | sum) }}</strong></td>
                     <td></td>
                 </tr>
             </tbody>
@@ -403,7 +401,6 @@
                 </tr>
             </thead>
             <tbody>
-                {% set total_qty = 0 %}
                 {% for receipt in stock_receipts %}
                 <tr>
                     <td>{{ receipt.receipt_id }}</td>
@@ -413,11 +410,10 @@
                     <td>{{ receipt.full_name or 'Unknown' }}</td>
                     <td>{{ receipt.received_date.strftime('%Y-%m-%d %H:%M:%S') if receipt.received_date else 'N/A' }}</td>
                 </tr>
-                {% set total_qty = total_qty + (receipt.quantity_received or 0) %}
                 {% endfor %}
                 <tr class="summary-row">
                     <td colspan="3"><strong>TOTAL ITEMS RECEIVED</strong></td>
-                    <td><strong>{{ total_qty }}</strong></td>
+                    <td><strong>{{ stock_receipts | map(attribute='quantity_received') | sum }}</strong></td>
                     <td colspan="2"></td>
                 </tr>
             </tbody>
