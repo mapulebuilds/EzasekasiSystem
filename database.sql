@@ -168,4 +168,8 @@ INSERT INTO `users` (`user_id`, `full_name`, `user_role`, `username`, `password_
 INSERT INTO `users` (`user_id`, `full_name`, `user_role`, `username`, `password_hash`, `contact_number`) VALUES (3, 'Brightness Masilela', 'Cashier', 'bri_m', '123456', NULL);
 INSERT INTO `users` (`user_id`, `full_name`, `user_role`, `username`, `password_hash`, `contact_number`) VALUES (4, 'Kearabetswe Lebelo', 'Cashier', 'kea_l', '123456', NULL);
 INSERT INTO `users` (`user_id`, `full_name`, `user_role`, `username`, `password_hash`, `contact_number`) VALUES (5, 'Karabo Komane', 'Supplier', 'kaybee_k', '123456', NULL);
+INSERT INTO `users` (`user_id`, `full_name`, `user_role`, `username`, `password_hash`, `contact_number`) VALUES (6, 'Tau Thamaga', 'Cashier', 'tau_t', '123456', NULL);
+INSERT INTO `users` (`user_id`, `full_name`, `user_role`, `username`, `password_hash`, `contact_number`) VALUES (7, 'Percy Thotse', 'Cashier', 'percy_t', '123456', NULL);
+INSERT INTO `users` (`user_id`, `full_name`, `user_role`, `username`, `password_hash`, `contact_number`) VALUES (8, 'Tshwarelo Mahlako', 'Admin', 'tshwarelo_m', '123456', NULL);
+INSERT INTO `users` (`user_id`, `full_name`, `user_role`, `username`, `password_hash`, `contact_number`) VALUES (9, 'Samkelisiwe Mngadi', 'Cashier', 'samke_m', '123456', NULL);
 

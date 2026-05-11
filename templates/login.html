@@ -4,167 +4,180 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login | Ezasekasi Spaza Shop</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
     <style>
-        :root { 
-            --tut-blue: #0054a6; 
-            --tut-blue-light: #1e6ab8;
-            --tut-yellow: #ffcc00; 
-            --tut-red: #ed1c24; 
-            --tut-red-light: #f54747;
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.08);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        body { 
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; 
-            background: linear-gradient(135deg, #f0f4f8 0%, #e8eef5 100%); 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            margin: 0;
-            color: #2c3e50;
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #0054a6 0%, #1e6ab8 100%);
+            padding: var(--spacing-md);
         }
 
-        .login-card { 
-            background: white; 
-            padding: 48px 42px; 
-            border-radius: 12px; 
-            box-shadow: var(--shadow-md); 
-            border-top: 5px solid var(--tut-blue); 
+        .login-container {
             width: 100%;
-            max-width: 400px; 
+            max-width: 420px;
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            overflow: hidden;
+        }
+
+        .login-header {
+            background: linear-gradient(135deg, #0054a6 0%, #1e6ab8 100%);
+            color: white;
+            padding: var(--spacing-xxl);
             text-align: center;
         }
 
-        .logo-placeholder {
-            font-size: 28px;
+        .login-brand {
+            font-size: 2rem;
             font-weight: 700;
-            color: var(--tut-blue);
-            margin-bottom: 8px;
+            margin-bottom: var(--spacing-sm);
             letter-spacing: -0.5px;
         }
 
-        .campus-tag {
-            color: #7f8c8d;
-            font-size: 0.8em;
-            margin-bottom: 32px;
-            display: block;
+        .login-subtitle {
+            font-size: 0.9rem;
+            opacity: 0.9;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 600;
+            letter-spacing: 1px;
         }
 
-        h2 { 
-            color: var(--tut-blue); 
-            margin-bottom: 28px; 
-            font-weight: 600;
-            font-size: 1.4em;
+        .login-body {
+            padding: var(--spacing-xxl);
         }
 
-        input { 
-            width: 100%; 
-            padding: 14px 16px; 
-            margin: 10px 0; 
-            border: 2px solid #d5dce3; 
-            border-radius: 6px; 
-            box-sizing: border-box; 
+        .login-title {
+            color: var(--primary);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: var(--spacing-lg);
+            text-align: center;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--text-dark);
+            margin-bottom: var(--spacing-sm);
+            display: block;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: var(--spacing-md);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            font-size: 0.95rem;
             transition: var(--transition);
             background: #fafbfc;
-            font-size: 0.95em;
-            font-family: inherit;
         }
 
-        input::placeholder {
-            color: #95a3b3;
-        }
-
-        input:focus {
+        .form-group input:focus {
             outline: none;
-            border-color: var(--tut-blue);
-            background: white;
+            border-color: var(--primary);
+            background: var(--bg-white);
             box-shadow: 0 0 0 3px rgba(0, 84, 166, 0.1);
         }
 
-        .btn-login { 
-            width: 100%; 
-            padding: 14px 18px; 
-            background: var(--tut-blue); 
-            color: white; 
-            border: none; 
-            border-radius: 6px; 
-            cursor: pointer; 
-            font-weight: 700; 
-            font-size: 0.95em;
-            margin-top: 16px;
+        .btn-login {
+            background: var(--primary);
+            color: white;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
             transition: var(--transition);
             text-transform: uppercase;
-            letter-spacing: 0.4px;
-            box-shadow: var(--shadow-sm);
+            letter-spacing: 0.5px;
         }
 
-        .btn-login:hover { 
-            background: var(--tut-blue-light);
+        .btn-login:hover {
+            background: var(--primary-light);
             transform: translateY(-2px);
             box-shadow: var(--shadow-md);
         }
 
-        .btn-login:active {
-            transform: translateY(0);
+        .error-alert {
+            background: rgba(231, 76, 60, 0.1);
+            border-left: 4px solid var(--danger);
+            color: #78281f;
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            margin-bottom: var(--spacing-lg);
+            font-size: 0.9rem;
         }
 
-        .error-msg { 
-            color: #b8181f; 
-            font-size: 0.9em; 
-            margin-top: 24px; 
-            background: #f8d7da; 
-            padding: 14px 16px; 
-            border-radius: 6px; 
-            border-left: 4px solid var(--tut-red);
-            text-align: left;
-            border: 1px solid #f5c6cb;
-        }
-
-        .footer-text {
-            margin-top: 32px;
-            font-size: 0.75em;
-            color: #95a3b3;
+        .login-footer {
+            text-align: center;
+            padding: var(--spacing-lg) var(--spacing-xxl);
+            border-top: 1px solid var(--border-color);
+            font-size: 0.8rem;
+            color: var(--text-light);
         }
 
         @media (max-width: 480px) {
-            .login-card {
-                padding: 36px 28px;
-                margin: 20px;
+            .login-header {
+                padding: var(--spacing-lg);
             }
 
-            h2 {
-                font-size: 1.2em;
+            .login-body {
+                padding: var(--spacing-lg);
+            }
+
+            .login-brand {
+                font-size: 1.5rem;
+            }
+
+            .login-title {
+                font-size: 1.25rem;
             }
         }
     </style>
 </head>
 <body>
-    <div class="login-card">
-        <div class="logo-placeholder">EZASEKASI SPAZA</div>
-        <span class="campus-tag">TUT Emalahleni | Management System</span>
-        
-        <h2>Staff Login</h2>
-        
-        <form action="/login" method="POST">
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit" class="btn-login">Access Dashboard</button>
-        </form>
-        
-        {% if error %}
-        <div class="error-msg">
-            <strong>Access Denied:</strong> {{ error }}
+    <div class="login-container">
+        <div class="login-header">
+            <div class="login-brand">EZASEKASI SPAZA</div>
+            <div class="login-subtitle">Management System</div>
         </div>
-        {% endif %}
 
-        <div class="footer-text">
-            &copy; 2026 Ezasekasi Team. All rights reserved.
+        <div class="login-body">
+            <h2 class="login-title">Staff Login</h2>
+
+            {% if error %}
+            <div class="error-alert">
+                {{ error }}
+            </div>
+            {% endif %}
+
+            <form action="/login" method="POST" class="login-form">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password" required>
+                </div>
+
+                <button type="submit" class="btn-login">Access Dashboard</button>
+            </form>
+        </div>
+
+        <div class="login-footer">
+            &copy; 2026 Ezasekasi Team. All rights reserved. <br>
+            Tshwane University of Technology - Emalahleni Campus
         </div>
     </div>
 </body>

@@ -2,515 +2,275 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Reports | Ezasekasi Spaza System</title>
-    <style>
-        :root {
-            --tut-blue: #0054a6;
-            --tut-yellow: #ffcc00;
-            --tut-red: #ed1c24;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', sans-serif; background: #f4f4f4; }
-
-        .user-bar {
-            text-align: right;
-            background: #fff;
-            color: var(--tut-blue);
-            font-weight: bold;
-            padding: 10px 30px;
-            border-bottom: 1px solid #ddd;
-            font-size: 0.9em;
-        }
-
-        .navbar {
-            background: var(--tut-blue);
-            color: white;
-            padding: 15px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 5px solid var(--tut-yellow);
-        }
-
-        .navbar-brand { font-size: 1.5em; font-weight: bold; }
-        .navbar-campus { font-size: 0.9em; }
-
-        .navbar-menu {
-            display: flex;
-            gap: 20px;
-            list-style: none;
-        }
-
-        .navbar-menu a {
-            color: white;
-            text-decoration: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-            transition: background 0.3s;
-        }
-
-        .navbar-menu a:hover {
-            background: rgba(255, 255, 255, 0.2);
-        }
-
-        .navbar-menu a.active {
-            background: var(--tut-yellow);
-            color: var(--tut-blue);
-            font-weight: bold;
-        }
-
-        .container { max-width: 1400px; margin: 20px auto; padding: 20px; }
-
-        .page-title {
-            color: var(--tut-blue);
-            margin-bottom: 30px;
-            border-bottom: 3px solid var(--tut-yellow);
-            padding-bottom: 15px;
-        }
-
-        .report-section {
-            background: white;
-            padding: 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
-            border-top: 4px solid var(--tut-blue);
-        }
-
-        .report-title {
-            color: var(--tut-blue);
-            font-size: 1.3em;
-            margin-bottom: 20px;
-            font-weight: bold;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .filter-group {
-            display: flex;
-            gap: 15px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
-            align-items: flex-end;
-        }
-
-        .filter-item {
-            display: flex;
-            flex-direction: column;
-        }
-
-        label {
-            color: var(--tut-blue);
-            font-weight: bold;
-            margin-bottom: 8px;
-            font-size: 0.95em;
-        }
-
-        input, select {
-            padding: 10px;
-            border: 2px solid #ddd;
-            border-radius: 4px;
-            font-size: 0.95em;
-            min-width: 200px;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--tut-blue);
-            box-shadow: 0 0 4px rgba(0, 84, 166, 0.2);
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
-            font-size: 0.95em;
-            transition: background 0.3s;
-        }
-
-        .btn-primary {
-            background: var(--tut-blue);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            background: #003d7a;
-        }
-
-        .btn-export {
-            background: #28a745;
-            color: white;
-        }
-
-        .btn-export:hover {
-            background: #218838;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 15px;
-            font-size: 0.9em;
-        }
-
-        th {
-            background: var(--tut-blue);
-            color: white;
-            padding: 12px;
-            text-align: left;
-            font-weight: bold;
-        }
-
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #eee;
-        }
-
-        tr:hover {
-            background: #f9f9f9;
-        }
-
-        .empty-message {
-            text-align: center;
-            padding: 40px;
-            color: #999;
-        }
-
-        .summary-row {
-            background: #f0f0f0;
-            font-weight: bold;
-            color: var(--tut-blue);
-        }
-
-        .summary-stat {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 15px;
-            margin-top: 15px;
-        }
-
-        .stat-box {
-            background: #f0f0f0;
-            padding: 15px;
-            border-radius: 4px;
-            border-left: 4px solid var(--tut-blue);
-        }
-
-        .stat-label {
-            color: #666;
-            font-size: 0.85em;
-        }
-
-        .stat-value {
-            color: var(--tut-blue);
-            font-size: 1.5em;
-            font-weight: bold;
-            margin-top: 5px;
-        }
-
-        .status-low {
-            color: var(--tut-red);
-            font-weight: bold;
-            background: #f8d7da;
-            padding: 4px 8px;
-            border-radius: 4px;
-            display: inline-block;
-        }
-
-        @media (max-width: 768px) {
-            .filter-group {
-                flex-direction: column;
-            }
-
-            input, select {
-                width: 100%;
-                min-width: auto;
-            }
-
-            .report-title {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 10px;
-            }
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports | Ezasekasi Spaza Shop</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <div class="wrapper">
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                EZASEKASI
+                <small>Spaza Shop System</small>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="/"><span class="sidebar-icon">📊</span> Dashboard</a></li>
+                <li><a href="/products"><span class="sidebar-icon">📦</span> Products</a></li>
+                <li><a href="/sales"><span class="sidebar-icon">💳</span> Sales/POS</a></li>
+                <li><a href="/suppliers"><span class="sidebar-icon">🏢</span> Suppliers</a></li>
+                <li><a href="/credit-customers"><span class="sidebar-icon">👥</span> Credit Customers</a></li>
+                <li><a href="/reports" class="active"><span class="sidebar-icon">📈</span> Reports</a></li>
+                <li><a href="/logout"><span class="sidebar-icon">🚪</span> Logout</a></li>
+            </ul>
+        </aside>
 
-<div class="user-bar">
-    Logged in as: {{ user }} | <a href="/logout" style="color: var(--tut-red); text-decoration: none;">Logout</a>
-</div>
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <!-- TOP BAR -->
+            <div class="top-bar">
+                <h1 style="margin: 0; font-size: 1.35rem;">Ezasekasi Management System</h1>
+                <div class="user-info">
+                    <span class="user-greeting">Welcome, {{ user }}! 👋</span>
+                    <a href="/logout" class="logout-btn">Logout</a>
+                </div>
+            </div>
 
-<div class="navbar">
-    <div>
-        <div class="navbar-brand">EZASEKASI SPAZA SHOP</div>
-        <div class="navbar-campus">Tshwane University of Technology | Emalahleni</div>
+            <!-- CONTENT AREA -->
+            <div class="content">
+                <div class="container">
+                    <!-- PAGE HEADER -->
+                    <div class="page-header">
+                        <h1 class="page-title">📈 Business Reports</h1>
+                        <p class="page-subtitle">Comprehensive analytics and reporting</p>
+                    </div>
+
+                    <!-- REPORT STATS -->
+                    <div class="stats-grid" style="margin-bottom: 40px;">
+                        <div class="stat-card success">
+                            <div class="stat-icon">📊</div>
+                            <div class="stat-label">Daily Sales</div>
+                            <div class="stat-value">{{ daily_sales|length }}</div>
+                            <div class="stat-change positive">transactions</div>
+                        </div>
+
+                        <div class="stat-card warning">
+                            <div class="stat-icon">⚠️</div>
+                            <div class="stat-label">Low Stock Products</div>
+                            <div class="stat-value">{{ low_stock|length }}</div>
+                            <div class="stat-change negative">require reorder</div>
+                        </div>
+
+                        <div class="stat-card info">
+                            <div class="stat-icon">📦</div>
+                            <div class="stat-label">Stock Receipts</div>
+                            <div class="stat-value">{{ stock_receipts|length }}</div>
+                            <div class="stat-change positive">this month</div>
+                        </div>
+
+                        <div class="stat-card danger">
+                            <div class="stat-icon">💳</div>
+                            <div class="stat-label">Total Credit Outstanding</div>
+                            <div class="stat-value">R{{ "%.2f"|format(total_outstanding) }}</div>
+                            <div class="stat-change negative">to collect</div>
+                        </div>
+                    </div>
+
+                    <!-- DAILY SALES REPORT -->
+                    <div class="card" style="margin-bottom: 40px;">
+                        <div class="card-header">
+                            <h3 class="card-title">📋 Daily Sales Report</h3>
+                            <div>
+                                <input type="date" id="report_date" value="{{ today }}" style="padding: 8px; border: 1px solid #e1e8ed; border-radius: 4px;">
+                                <a href="/reports/export-sales?date=" id="export-csv" class="btn btn-success btn-sm" style="margin-left: 8px;">📥 Export CSV</a>
+                                <a href="/reports/export-sales-pdf?date=" id="export-pdf" class="btn btn-danger btn-sm" style="margin-left: 8px;">📄 Export PDF</a>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Sale ID</th>
+                                        <th>Product</th>
+                                        <th>Cashier</th>
+                                        <th>Quantity</th>
+                                        <th>Amount</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if daily_sales %}
+                                    {% for sale in daily_sales %}
+                                    <tr>
+                                        <td>#{{ sale.sale_id }}</td>
+                                        <td>{{ sale.product_name or 'N/A' }}</td>
+                                        <td>{{ sale.full_name or 'Unknown' }}</td>
+                                        <td>{{ sale.quantity_sold }}</td>
+                                        <td><strong>R{{ "%.2f"|format(sale.total_amount or 0) }}</strong></td>
+                                        <td>{{ sale.sale_timestamp.strftime('%H:%M:%S') if sale.sale_timestamp else 'N/A' }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="6" style="text-align: center; color: #7f8c8d;">No sales for selected date</td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- LOW STOCK REPORT -->
+                    <div class="card" style="margin-bottom: 40px;">
+                        <div class="card-header">
+                            <h3 class="card-title">⚠️ Low Stock Alert Report</h3>
+                            <select id="category-filter" style="padding: 8px; border: 1px solid #e1e8ed; border-radius: 4px;">
+                                <option value="">All Categories</option>
+                                {% for cat in categories %}
+                                <option value="{{ cat }}">{{ cat }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Category</th>
+                                        <th>Current Stock</th>
+                                        <th>Reorder Level</th>
+                                        <th>Shortage</th>
+                                        <th>Supplier</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if low_stock %}
+                                    {% for product in low_stock %}
+                                    <tr>
+                                        <td><strong>{{ product.product_name }}</strong></td>
+                                        <td>{{ product.category }}</td>
+                                        <td><span class="badge badge-danger">{{ product.stock_quantity }}</span></td>
+                                        <td>{{ product.reorder_level }}</td>
+                                        <td>{{ product.reorder_level - product.stock_quantity }} units</td>
+                                        <td>{{ product.supplier_name or '-' }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="6" style="text-align: center; color: #7f8c8d;">All products in good stock</td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- STOCK RECEIPTS REPORT -->
+                    <div class="card" style="margin-bottom: 40px;">
+                        <div class="card-header">
+                            <h3 class="card-title">📥 Stock Receipts Report</h3>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Receipt ID</th>
+                                        <th>Supplier</th>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Received By</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if stock_receipts %}
+                                    {% for receipt in stock_receipts %}
+                                    <tr>
+                                        <td>#{{ receipt.receipt_id }}</td>
+                                        <td>{{ receipt.supplier_name or 'N/A' }}</td>
+                                        <td>{{ receipt.product_name or 'N/A' }}</td>
+                                        <td>{{ receipt.quantity_received }}</td>
+                                        <td>{{ receipt.full_name or 'Unknown' }}</td>
+                                        <td>{{ receipt.received_date.strftime('%d %b %Y') if receipt.received_date else 'N/A' }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="6" style="text-align: center; color: #7f8c8d;">No stock receipts</td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- CREDIT REPORT -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">💳 Credit Customer Report</h3>
+                            <strong style="color: var(--danger);">Total Outstanding: R{{ "%.2f"|format(total_outstanding) }}</strong>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Customer</th>
+                                        <th>Phone</th>
+                                        <th>Credit Limit</th>
+                                        <th>Current Balance</th>
+                                        <th>Transactions</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if credit_report %}
+                                    {% for customer in credit_report %}
+                                    <tr>
+                                        <td><strong>{{ customer.full_name }}</strong></td>
+                                        <td>{{ customer.phone or '-' }}</td>
+                                        <td>R{{ "%.2f"|format(customer.credit_limit) }}</td>
+                                        <td>R{{ "%.2f"|format(customer.current_balance) }}</td>
+                                        <td>{{ customer.transaction_count or 0 }}</td>
+                                        <td>
+                                            {% if customer.current_balance >= customer.credit_limit %}
+                                            <span class="badge badge-danger">⚠️ At Limit</span>
+                                            {% elif customer.current_balance > 0 %}
+                                            <span class="badge badge-warning">Owing</span>
+                                            {% else %}
+                                            <span class="badge badge-success">✓ Good</span>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="6" style="text-align: center; color: #7f8c8d;">No credit customers</td>
+                                    </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <ul class="navbar-menu">
-        <li><a href="/">Dashboard</a></li>
-        <li><a href="/products">Products/Inventory</a></li>
-        <li><a href="/sales">Sales/POS</a></li>
-        <li><a href="/suppliers">Suppliers</a></li>
-        <li><a href="/credit-customers">Credit Customers</a></li>
-        <li><a href="/reports" class="active">Reports</a></li>
-    </ul>
-</div>
 
-<div class="container">
-    <h1 class="page-title">📊 Reports & Analysis</h1>
+    <script>
+        // Initialize export links on page load
+        function updateExportLinks() {
+            const date = document.getElementById('report_date').value;
+            if (date) {
+                document.getElementById('export-csv').href = '/reports/export-sales?date=' + date;
+                document.getElementById('export-pdf').href = '/reports/export-sales-pdf?date=' + date;
+            }
+        }
 
-    <!-- REPORT 1: DAILY SALES REPORT -->
-    <div class="report-section">
-        <div class="report-title">
-            💳 Daily Sales Report
-            <div style="display: flex; gap: 10px;">
-                <a href="/reports/export-sales-pdf?date={{ report_date or today }}" class="btn btn-export" style="background: #dc3545;">📄 PDF</a>
-            </div>
-        </div>
+        // Update on page load
+        document.addEventListener('DOMContentLoaded', updateExportLinks);
 
-        <div class="filter-group">
-            <div class="filter-item">
-                <label for="sales_date">Select Date:</label>
-                <input type="date" id="sales_date" value="{{ report_date or today }}" onchange="filterSales()">
-            </div>
-        </div>
-
-        {% if daily_sales %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Sale ID</th>
-                    <th>Product</th>
-                    <th>Cashier</th>
-                    <th>Quantity</th>
-                    <th>Total Amount</th>
-                    <th>Timestamp</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for sale in daily_sales %}
-                <tr>
-                    <td>{{ sale.sale_id }}</td>
-                    <td>{{ sale.product_name or 'Unknown' }}</td>
-                    <td>{{ sale.full_name or 'Unknown' }}</td>
-                    <td>{{ sale.quantity_sold }}</td>
-                    <td>R{{ "%.2f"|format(sale.total_amount or 0) }}</td>
-                    <td>{{ sale.sale_timestamp.strftime('%H:%M:%S') if sale.sale_timestamp else 'N/A' }}</td>
-                </tr>
-                {% endfor %}
-                <tr class="summary-row">
-                    <td colspan="4"><strong>TOTAL SALES</strong></td>
-                    <td><strong>R{{ "%.2f"|format(daily_sales | map(attribute='total_amount') | map('float') | sum) }}</strong></td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-        {% else %}
-        <div class="empty-message">
-            <p>No sales recorded for {{ report_date or 'today' }}</p>
-        </div>
-        {% endif %}
-    </div>
-
-    <!-- REPORT 2: LOW STOCK REPORT -->
-    <div class="report-section">
-        <div class="report-title">⚠️ Low Stock Report</div>
-
-        <div class="filter-group">
-            <div class="filter-item">
-                <label for="stock_category">Filter by Category:</label>
-                <select id="stock_category" onchange="filterLowStock()">
-                    <option value="">All Categories</option>
-                    {% for cat in categories %}
-                    <option value="{{ cat }}" {% if selected_category == cat %}selected{% endif %}>{{ cat }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-
-        {% if low_stock %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <th>Category</th>
-                    <th>Supplier</th>
-                    <th>Current Stock</th>
-                    <th>Reorder Level</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for product in low_stock %}
-                <tr>
-                    <td><strong>{{ product.product_name }}</strong></td>
-                    <td>{{ product.category or 'N/A' }}</td>
-                    <td>{{ product.supplier_name or 'None' }}</td>
-                    <td>{{ product.stock_quantity }}</td>
-                    <td>{{ product.reorder_level or 10 }}</td>
-                    <td><span class="status-low">🚨 LOW STOCK</span></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <div class="summary-stat">
-            <div class="stat-box">
-                <div class="stat-label">Total Low Stock Items</div>
-                <div class="stat-value">{{ low_stock|length }}</div>
-            </div>
-        </div>
-        {% else %}
-        <div class="empty-message">
-            <p>All products are well-stocked!</p>
-        </div>
-        {% endif %}
-    </div>
-
-    <!-- REPORT 3: SUPPLIER STOCK RECEIPTS REPORT -->
-    <div class="report-section">
-        <div class="report-title">📦 Supplier Stock Receipts Report</div>
-
-        <div class="filter-group">
-            <div class="filter-item">
-                <label for="receipts_supplier">Filter by Supplier:</label>
-                <select id="receipts_supplier" onchange="filterReceipts()">
-                    <option value="">All Suppliers</option>
-                    {% for supplier in suppliers %}
-                    <option value="{{ supplier.supplier_id }}" {% if selected_supplier|string == supplier.supplier_id|string %}selected{% endif %}>
-                        {{ supplier.supplier_name }}
-                    </option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-
-        {% if stock_receipts %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Receipt ID</th>
-                    <th>Supplier</th>
-                    <th>Product</th>
-                    <th>Quantity</th>
-                    <th>Received By</th>
-                    <th>Date/Time</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for receipt in stock_receipts %}
-                <tr>
-                    <td>{{ receipt.receipt_id }}</td>
-                    <td>{{ receipt.supplier_name or 'Unknown' }}</td>
-                    <td>{{ receipt.product_name or 'Unknown' }}</td>
-                    <td>{{ receipt.quantity_received }}</td>
-                    <td>{{ receipt.full_name or 'Unknown' }}</td>
-                    <td>{{ receipt.received_date.strftime('%Y-%m-%d %H:%M:%S') if receipt.received_date else 'N/A' }}</td>
-                </tr>
-                {% endfor %}
-                <tr class="summary-row">
-                    <td colspan="3"><strong>TOTAL ITEMS RECEIVED</strong></td>
-                    <td><strong>{{ stock_receipts | map(attribute='quantity_received') | sum }}</strong></td>
-                    <td colspan="2"></td>
-                </tr>
-            </tbody>
-        </table>
-        {% else %}
-        <div class="empty-message">
-            <p>No stock receipts found</p>
-        </div>
-        {% endif %}
-    </div>
-
-    <!-- REPORT 4: CREDIT CUSTOMER BALANCE REPORT -->
-    <div class="report-section">
-        <div class="report-title">💰 Credit Customer Balance Report</div>
-
-        <div class="filter-group">
-            <div class="filter-item">
-                <label for="credit_customer">Filter by Customer:</label>
-                <select id="credit_customer" onchange="filterCredit()">
-                    <option value="">All Customers</option>
-                    {% for customer in customers %}
-                    <option value="{{ customer.customer_id }}" {% if selected_customer|string == customer.customer_id|string %}selected{% endif %}>
-                        {{ customer.full_name }} (R{{ "%.2f"|format(customer.current_balance) }})
-                    </option>
-                    {% endfor %}
-                </select>
-            </div>
-        </div>
-
-        {% if credit_report %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Customer Name</th>
-                    <th>Phone</th>
-                    <th>Credit Limit</th>
-                    <th>Current Balance</th>
-                    <th>Available Credit</th>
-                    <th>Transactions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for customer in credit_report %}
-                <tr>
-                    <td><strong>{{ customer.full_name }}</strong></td>
-                    <td>{{ customer.phone or 'N/A' }}</td>
-                    <td>R{{ "%.2f"|format(customer.credit_limit) }}</td>
-                    <td>R{{ "%.2f"|format(customer.current_balance) }}</td>
-                    <td>R{{ "%.2f"|format(customer.credit_limit - customer.current_balance) }}</td>
-                    <td>{{ customer.transaction_count or 0 }}</td>
-                </tr>
-                {% endfor %}
-                <tr class="summary-row">
-                    <td colspan="3"><strong>TOTAL OUTSTANDING</strong></td>
-                    <td colspan="3"><strong>R{{ "%.2f"|format(total_outstanding) }}</strong></td>
-                </tr>
-            </tbody>
-        </table>
-        <div class="summary-stat">
-            <div class="stat-box">
-                <div class="stat-label">Total Customers</div>
-                <div class="stat-value">{{ credit_report|length }}</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-label">Total Outstanding Balance</div>
-                <div class="stat-value">R{{ "%.2f"|format(total_outstanding) }}</div>
-            </div>
-        </div>
-        {% else %}
-        <div class="empty-message">
-            <p>No credit customers found</p>
-        </div>
-        {% endif %}
-    </div>
-</div>
-
-<script>
-function filterSales() {
-    const date = document.getElementById('sales_date').value;
-    window.location.href = `/reports/daily-sales?date=${date}`;
-}
-
-function filterLowStock() {
-    const category = document.getElementById('stock_category').value;
-    window.location.href = `/reports/low-stock?category=${category}`;
-}
-
-function filterReceipts() {
-    const supplierId = document.getElementById('receipts_supplier').value;
-    window.location.href = `/reports/stock-receipts?supplier_id=${supplierId}`;
-}
-
-function filterCredit() {
-    const customerId = document.getElementById('credit_customer').value;
-    window.location.href = `/reports/credit-balances?customer_id=${customerId}`;
-}
-</script>
-
+        // Update when date picker changes
+        document.getElementById('report_date').addEventListener('change', updateExportLinks);
+    </script>
 </body>
 </html>

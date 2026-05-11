@@ -2,577 +2,391 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Products/Inventory | Ezasekasi Spaza System</title>
-    <style>
-        :root {
-            --tut-blue: #0054a6;
-            --tut-blue-light: #1e6ab8;
-            --tut-yellow: #ffcc00;
-            --tut-red: #ed1c24;
-            --tut-red-light: #f54747;
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.08);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; background: #f8f9fa; color: #2c3e50; line-height: 1.6; }
-
-        .user-bar {
-            text-align: right;
-            background: #fff;
-            color: var(--tut-blue);
-            font-weight: 600;
-            padding: 12px 30px;
-            border-bottom: 1px solid #e8eef5;
-            font-size: 0.9em;
-        }
-
-        .user-bar a {
-            color: var(--tut-red);
-            text-decoration: none;
-            transition: var(--transition);
-            font-weight: 600;
-        }
-
-        .user-bar a:hover {
-            color: var(--tut-red-light);
-            text-decoration: underline;
-        }
-
-        .navbar {
-            background: var(--tut-blue);
-            color: white;
-            padding: 18px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 5px solid var(--tut-yellow);
-            box-shadow: var(--shadow-md);
-        }
-
-        .navbar-brand { font-size: 1.5em; font-weight: 700; }
-        .navbar-campus { font-size: 0.9em; opacity: 0.95; }
-
-        .navbar-menu {
-            display: flex;
-            gap: 20px;
-            list-style: none;
-        }
-
-        .navbar-menu a {
-            color: white;
-            text-decoration: none;
-            padding: 8px 14px;
-            border-radius: 6px;
-            transition: var(--transition);
-            font-weight: 500;
-        }
-
-        .navbar-menu a:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-1px);
-        }
-
-        .navbar-menu a.active {
-            background: var(--tut-yellow);
-            color: var(--tut-blue);
-            font-weight: 700;
-        }
-
-        .container { max-width: 1400px; margin: 30px auto; padding: 30px; }
-
-        .page-title {
-            color: var(--tut-blue);
-            margin-bottom: 35px;
-            border-bottom: 3px solid var(--tut-yellow);
-            padding-bottom: 18px;
-            font-size: 2em;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-        }
-
-        .alert {
-            padding: 16px 18px;
-            border-radius: 8px;
-            margin-bottom: 24px;
-            border-left: 5px solid;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 500;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .alert-success {
-            background: #d4edda;
-            color: #1e7e34;
-            border-left-color: #28a745;
-        }
-
-        .alert-error {
-            background: #f8d7da;
-            color: #b8181f;
-            border-left-color: var(--tut-red);
-        }
-
-        .form-section {
-            background: white;
-            padding: 28px;
-            border-radius: 10px;
-            box-shadow: var(--shadow-sm);
-            margin-bottom: 32px;
-            border-top: 4px solid var(--tut-blue);
-            border: 1px solid #e8eef5;
-        }
-
-        .form-title {
-            color: var(--tut-blue);
-            font-size: 1.35em;
-            margin-bottom: 24px;
-            font-weight: 600;
-            letter-spacing: -0.3px;
-        }
-
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 22px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .form-group.full {
-            grid-column: 1 / -1;
-        }
-
-        label {
-            color: var(--tut-blue);
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 0.9em;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        input, select, textarea {
-            padding: 12px 14px;
-            border: 2px solid #d5dce3;
-            border-radius: 6px;
-            font-size: 0.95em;
-            transition: var(--transition);
-            background: #fafbfc;
-            font-family: inherit;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--tut-blue);
-            background: white;
-            box-shadow: 0 0 0 3px rgba(0, 84, 166, 0.1);
-        }
-
-        .button-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 24px;
-            grid-column: 1 / -1;
-        }
-
-        .btn {
-            padding: 12px 26px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.85em;
-            transition: var(--transition);
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-        }
-
-        .btn-primary {
-            background: var(--tut-blue);
-            color: white;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .btn-primary:hover {
-            background: var(--tut-blue-light);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .btn-reset {
-            background: #95a3b3;
-            color: white;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .btn-reset:hover {
-            background: #7a8391;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .table-section {
-            background: white;
-            padding: 28px;
-            border-radius: 10px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid #e8eef5;
-            margin-bottom: 32px;
-        }
-
-        .table-title {
-            color: var(--tut-blue);
-            font-size: 1.35em;
-            margin-bottom: 24px;
-            font-weight: 600;
-            letter-spacing: -0.3px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9em;
-        }
-
-        th {
-            background: var(--tut-blue);
-            color: white;
-            padding: 14px 12px;
-            text-align: left;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-            text-transform: uppercase;
-            font-size: 0.85em;
-        }
-
-        td {
-            padding: 13px 12px;
-            border-bottom: 1px solid #e8eef5;
-        }
-
-        tbody tr:nth-child(even) {
-            background: #f8f9fa;
-        }
-
-        tbody tr:hover {
-            background: #f0f4f8;
-            transition: background 0.2s ease;
-        }
-
-        .table-actions {
-            display: flex;
-            gap: 8px;
-            flex-wrap: wrap;
-        }
-
-        .btn-small {
-            padding: 7px 14px;
-            font-size: 0.75em;
-            border-radius: 5px;
-            box-shadow: var(--shadow-sm);
-            transition: var(--transition);
-        }
-
-        .btn-edit {
-            background: #007bff;
-            color: white;
-        }
-
-        .btn-edit:hover {
-            background: #0056b3;
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .btn-delete {
-            background: var(--tut-red);
-            color: white;
-        }
-
-        .btn-delete:hover {
-            background: var(--tut-red-light);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .empty-message {
-            text-align: center;
-            padding: 48px 20px;
-            color: #95a3b3;
-            font-size: 0.95em;
-        }
-
-        .required {
-            color: var(--tut-red);
-            font-weight: 600;
-        }
-
-        @media (max-width: 1024px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            table {
-                font-size: 0.85em;
-            }
-
-            .btn-small {
-                padding: 6px 10px;
-                font-size: 0.7em;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-                margin: 16px auto;
-            }
-
-            .page-title {
-                font-size: 1.6em;
-                margin-bottom: 24px;
-            }
-
-            .form-section,
-            .table-section {
-                padding: 20px;
-            }
-
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .table-actions {
-                flex-direction: column;
-            }
-
-            .btn-small {
-                width: 100%;
-                text-align: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .container {
-                padding: 12px;
-                margin: 12px auto;
-            }
-
-            .page-title {
-                font-size: 1.3em;
-                margin-bottom: 20px;
-            }
-
-            .navbar {
-                flex-direction: column;
-                gap: 12px;
-                padding: 12px;
-            }
-
-            .navbar-menu {
-                flex-wrap: wrap;
-                gap: 8px;
-            }
-
-            .navbar-menu a {
-                padding: 6px 10px;
-                font-size: 0.8em;
-            }
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products | Ezasekasi Spaza Shop</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <div class="wrapper">
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                EZASEKASI
+                <small>Spaza Shop System</small>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="/"><span class="sidebar-icon">📊</span> Dashboard</a></li>
+                <li><a href="/products" class="active"><span class="sidebar-icon">📦</span> Products</a></li>
+                <li><a href="/sales"><span class="sidebar-icon">💳</span> Sales/POS</a></li>
+                <li><a href="/suppliers"><span class="sidebar-icon">🏢</span> Suppliers</a></li>
+                <li><a href="/credit-customers"><span class="sidebar-icon">👥</span> Credit Customers</a></li>
+                <li><a href="/reports"><span class="sidebar-icon">📈</span> Reports</a></li>
+                <li><a href="/logout"><span class="sidebar-icon">🚪</span> Logout</a></li>
+            </ul>
+        </aside>
 
-<div class="user-bar">
-    Logged in as: {{ user }} | <a href="/logout">Logout</a>
-</div>
-
-<div class="navbar">
-    <div>
-        <div class="navbar-brand">EZASEKASI SPAZA SHOP</div>
-        <div class="navbar-campus">Tshwane University of Technology | Emalahleni</div>
-    </div>
-    <ul class="navbar-menu">
-        <li><a href="/">Dashboard</a></li>
-        <li><a href="/products" class="active">Products/Inventory</a></li>
-        <li><a href="/sales">Sales/POS</a></li>
-        <li><a href="/suppliers">Suppliers</a></li>
-        <li><a href="/credit-customers">Credit Customers</a></li>
-        <li><a href="/reports">Reports</a></li>
-    </ul>
-</div>
-
-<div class="container">
-    <h1 class="page-title">📦 Products / Inventory Management</h1>
-
-    {% if success %}
-    <div class="alert alert-success">
-        <strong>✓ Success:</strong> {{ success }}
-    </div>
-    {% endif %}
-
-    {% if error %}
-    <div class="alert alert-error">
-        <strong>✗ Error:</strong> {{ error }}
-    </div>
-    {% endif %}
-
-    <!-- ADD/EDIT PRODUCT FORM -->
-    <div class="form-section">
-        <div class="form-title">➕ Add New Product</div>
-        <form method="POST" action="/products/add">
-            <div class="form-grid">
-                <div class="form-group">
-                    <label for="product_name">Product Name <span class="required">*</span></label>
-                    <input type="text" id="product_name" name="product_name" required placeholder="e.g., Milk 2L">
-                </div>
-
-                <div class="form-group">
-                    <label for="category">Category <span class="required">*</span></label>
-                    <select id="category" name="category" required>
-                        <option value="">-- Select Category --</option>
-                        <option value="Dairy">Dairy</option>
-                        <option value="Groceries">Groceries</option>
-                        <option value="Snacks">Snacks</option>
-                        <option value="Beverages">Beverages</option>
-                        <option value="Toiletries">Toiletries</option>
-                        <option value="Cleaning">Cleaning Supplies</option>
-                        <option value="Other">Other</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="cost_price">Cost Price (R) <span class="required">*</span></label>
-                    <input type="number" id="cost_price" name="cost_price" step="0.01" min="0" required placeholder="0.00">
-                </div>
-
-                <div class="form-group">
-                    <label for="selling_price">Selling Price (R) <span class="required">*</span></label>
-                    <input type="number" id="selling_price" name="selling_price" step="0.01" min="0" required placeholder="0.00">
-                </div>
-
-                <div class="form-group">
-                    <label for="stock_quantity">Stock Quantity <span class="required">*</span></label>
-                    <input type="number" id="stock_quantity" name="stock_quantity" min="0" required placeholder="0">
-                </div>
-
-                <div class="form-group">
-                    <label for="reorder_level">Reorder Level</label>
-                    <input type="number" id="reorder_level" name="reorder_level" min="0" value="10" placeholder="10">
-                </div>
-
-                <div class="form-group">
-                    <label for="supplier_id">Supplier</label>
-                    <select id="supplier_id" name="supplier_id">
-                        <option value="">-- No Supplier --</option>
-                        {% for supplier in suppliers %}
-                        <option value="{{ supplier.supplier_id }}">{{ supplier.supplier_name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="expiry_date">Expiry Date</label>
-                    <input type="date" id="expiry_date" name="expiry_date">
-                </div>
-
-                <div class="button-group">
-                    <button type="submit" class="btn btn-primary">➕ Add Product</button>
-                    <button type="reset" class="btn btn-reset">Clear Form</button>
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <!-- TOP BAR -->
+            <div class="top-bar">
+                <h1 style="margin: 0; font-size: 1.35rem;">Ezasekasi Management System</h1>
+                <div class="user-info">
+                    <span class="user-greeting">Welcome, {{ user }}! 👋</span>
+                    <a href="/logout" class="logout-btn">Logout</a>
                 </div>
             </div>
-        </form>
-    </div>
 
-    <!-- PRODUCTS TABLE -->
-    <div class="table-section">
-        <div class="table-title">📋 Product List</div>
-        {% if products %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Product Name</th>
-                    <th>Category</th>
-                    <th>Cost Price</th>
-                    <th>Selling Price</th>
-                    <th>Stock</th>
-                    <th>Reorder Level</th>
-                    <th>Supplier</th>
-                    <th>Expiry Date</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for product in products %}
-                <tr>
-                    <td><strong>{{ product.product_name }}</strong></td>
-                    <td>{{ product.category or 'N/A' }}</td>
-                    <td>R{{ "%.2f"|format(product.cost_price or 0) }}</td>
-                    <td>R{{ "%.2f"|format(product.selling_price or 0) }}</td>
-                    <td>
-                        <strong
-                            {% if (product.stock_quantity or 0) <= (product.reorder_level or 10) %}
-                                style="color: var(--tut-red);"
-                            {% else %}
-                                style="color: green;"
-                            {% endif %}
-                        >
-                            {{ product.stock_quantity or 0 }}
-                        </strong>
-                    </td>
-                    <td>{{ product.reorder_level or 10 }}</td>
-                    <td>{{ product.supplier_name or 'None' }}</td>
-                    <td>{{ product.expiry_date or 'N/A' }}</td>
-                    <td>
-                        <div class="table-actions">
-                            <button class="btn btn-edit btn-small" onclick="editProduct({{ product.product_id }}, '{{ product.product_name }}', '{{ product.category }}', {{ product.cost_price }}, {{ product.selling_price }}, {{ product.stock_quantity }}, {{ product.reorder_level }}, '{{ product.expiry_date or '' }}', {{ product.supplier_id or 'null' }})">
-                                ✎ Edit
-                            </button>
-                            <form method="POST" action="/products/delete/{{ product.product_id }}" style="display:inline;">
-                                <button type="submit" class="btn btn-delete btn-small" onclick="return confirm('Delete this product?')">
-                                    🗑 Delete
-                                </button>
+            <!-- CONTENT AREA -->
+            <div class="content">
+                <div class="container">
+                    <!-- PAGE HEADER -->
+                    <div class="page-header">
+                        <h1 class="page-title">📦 Products & Inventory</h1>
+                        <p class="page-subtitle">Manage your product inventory and stock levels</p>
+                    </div>
+
+                    <!-- ALERTS -->
+                    {% if error %}
+                    <div class="alert alert-danger">
+                        <strong>Error:</strong> {{ error }}
+                    </div>
+                    {% endif %}
+                    {% if success %}
+                    <div class="alert alert-success">
+                        <strong>Success:</strong> {{ success }}
+                    </div>
+                    {% endif %}
+
+                    <!-- ADD PRODUCT FORM -->
+                    <div class="card" style="margin-bottom: 40px;">
+                        <div class="card-header">
+                            <h3 class="card-title">➕ Add New Product</h3>
+                        </div>
+                        <div class="card-body">
+                            <form action="/products/add" method="POST" id="productForm" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+                                <div class="form-group">
+                                    <label>Product Name * <span style="color: #999; font-size: 0.9rem;">(min. 2 characters)</span></label>
+                                    <input type="text" name="product_name" placeholder="e.g., Milk 2L" required minlength="2" maxlength="100">
+                                </div>
+                                <div class="form-group">
+                                    <label>Category *</label>
+                                    <select name="category" required>
+                                        <option value="">-- Select Category --</option>
+                                        <option>Dairy</option>
+                                        <option>Bakery</option>
+                                        <option>Pantry</option>
+                                        <option>Beverage</option>
+                                        <option>Snacks</option>
+                                        <option>Toiletries</option>
+                                        <option>Cleaning</option>
+                                        <option>Other</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label>Selling Price (R) * <span style="color: #999; font-size: 0.9rem;">(must be ≥ 0)</span></label>
+                                    <input type="number" name="selling_price" step="0.01" placeholder="0.00" min="0" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Cost Price (R) * <span style="color: #999; font-size: 0.9rem;">(must be ≥ 0)</span></label>
+                                    <input type="number" name="cost_price" step="0.01" placeholder="0.00" min="0" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Stock Quantity * <span style="color: #999; font-size: 0.9rem;">(must be ≥ 0)</span></label>
+                                    <input type="number" name="stock_quantity" placeholder="0" min="0" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Reorder Level * <span style="color: #999; font-size: 0.9rem;">(trigger for low stock alert)</span></label>
+                                    <input type="number" name="reorder_level" placeholder="5" value="5" min="0" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Expiry Date <span style="color: #999; font-size: 0.9rem;">(optional)</span></label>
+                                    <input type="date" name="expiry_date">
+                                </div>
+                                <div class="form-group">
+                                    <label>Supplier <span style="color: #999; font-size: 0.9rem;">(optional)</span></label>
+                                    <select name="supplier_id">
+                                        <option value="">-- Select Supplier --</option>
+                                        {% for supplier in suppliers %}
+                                        <option value="{{ supplier.supplier_id }}">{{ supplier.supplier_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <button type="submit" class="btn btn-success" style="grid-column: 1 / -1;">➕ Add Product</button>
                             </form>
                         </div>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-        <div class="empty-message">
-            <p>No products found. Add your first product above!</p>
+                    </div>
+
+                    <!-- SEARCH & FILTER SECTION -->
+                    <div class="card" style="margin-bottom: 30px;">
+                        <div class="card-body" style="padding: 20px;">
+                            <!-- SEARCH BAR -->
+                            <div style="margin-bottom: 15px;">
+                                <input type="text" id="searchInput" placeholder="🔍 Search by product name, category, or supplier..." 
+                                       style="width: 100%; padding: 10px 15px; border: 1px solid #ddd; border-radius: 4px; font-size: 1rem;">
+                            </div>
+
+                            <!-- FILTER BUTTONS -->
+                            <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                                <button onclick="filterProducts('all')" class="filter-btn active" data-filter="all">
+                                    📦 All Products <span class="filter-count" data-count="all"></span>
+                                </button>
+                                <button onclick="filterProducts('enough')" class="filter-btn" data-filter="enough">
+                                    ✓ Enough Stock <span class="filter-count" data-count="enough"></span>
+                                </button>
+                                <button onclick="filterProducts('low')" class="filter-btn" data-filter="low">
+                                    ⚠️ Low Stock <span class="filter-count" data-count="low"></span>
+                                </button>
+                                <button onclick="filterProducts('out')" class="filter-btn" data-filter="out">
+                                    ❌ Out of Stock <span class="filter-count" data-count="out"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PRODUCTS TABLE -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">📋 Product Inventory</h3>
+                            <span style="color: #7f8c8d;"><span id="productCount">{{ products|length }}</span> products</span>
+                        </div>
+                        <div class="table-container">
+                            <table id="productsTable">
+                                <thead>
+                                    <tr>
+                                        <th>Product</th>
+                                        <th>Category</th>
+                                        <th>Cost Price</th>
+                                        <th>Selling Price</th>
+                                        <th>Stock</th>
+                                        <th>Reorder Level</th>
+                                        <th>Status</th>
+                                        <th>Supplier</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="productsTableBody">
+                                    {% for product in products %}
+                                    <tr class="product-row" 
+                                        data-product-name="{{ product.product_name.lower() }}"
+                                        data-category="{{ product.category.lower() }}"
+                                        data-supplier="{{ (product.supplier_name or '').lower() }}"
+                                        data-stock="{{ product.stock_quantity }}"
+                                        data-reorder="{{ product.reorder_level }}"
+                                        {% if product.stock_quantity == 0 %}data-status="out"{% elif product.stock_quantity <= product.reorder_level %}data-status="low"{% else %}data-status="enough"{% endif %}>
+                                        <td><strong>{{ product.product_name }}</strong></td>
+                                        <td>{{ product.category }}</td>
+                                        <td>R{{ "%.2f"|format(product.cost_price or 0) }}</td>
+                                        <td>R{{ "%.2f"|format(product.selling_price or 0) }}</td>
+                                        <td>{{ product.stock_quantity }}</td>
+                                        <td>{{ product.reorder_level }}</td>
+                                        <td>
+                                            {% if product.stock_quantity == 0 %}
+                                            <span class="badge badge-danger">❌ Out of Stock</span>
+                                            {% elif product.stock_quantity <= product.reorder_level %}
+                                            <span class="badge badge-warning">⚠️ Low Stock</span>
+                                            {% else %}
+                                            <span class="badge badge-success">✓ In Stock</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ product.supplier_name or '-' }}</td>
+                                        <td style="white-space: nowrap;">
+                                            <button onclick="editProduct({{ product.product_id }})" class="btn btn-primary btn-sm">Edit</button>
+                                            <button onclick="deleteProduct({{ product.product_id }})" class="btn btn-danger btn-sm">Delete</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                            <div id="noResultsMessage" style="display: none; padding: 30px; text-align: center; color: #666;">
+                                <p style="font-size: 1.1rem;">📭 No products found matching your search</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        {% endif %}
     </div>
-</div>
 
-<script>
-function editProduct(id, name, category, costPrice, sellingPrice, stock, reorderLevel, expiryDate, supplierId) {
-    document.getElementById('product_name').value = name;
-    document.getElementById('category').value = category;
-    document.getElementById('cost_price').value = costPrice;
-    document.getElementById('selling_price').value = sellingPrice;
-    document.getElementById('stock_quantity').value = stock;
-    document.getElementById('reorder_level').value = reorderLevel;
-    document.getElementById('expiry_date').value = expiryDate;
-    document.getElementById('supplier_id').value = supplierId || '';
+    <script>
+        // ===== FILTER & SEARCH FUNCTIONALITY =====
+        let currentFilter = 'all';
 
-    const form = document.querySelector('form');
-    form.action = `/products/update/${id}`;
-    document.querySelector('.form-title').textContent = '✎ Edit Product';
-    document.querySelector('button[type="submit"]').textContent = '✓ Update Product';
+        // Initialize filter counts on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            updateFilterCounts();
+            applySearch();
+        });
 
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-}
-</script>
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('keyup', function() {
+            applySearch();
+        });
 
+        function applySearch() {
+            const searchText = document.getElementById('searchInput').value.toLowerCase();
+            const rows = document.querySelectorAll('.product-row');
+            let visibleCount = 0;
+
+            rows.forEach(row => {
+                const productName = row.dataset.productName;
+                const category = row.dataset.category;
+                const supplier = row.dataset.supplier;
+                const status = row.dataset.status;
+
+                // Check if row matches search text
+                const matchesSearch = !searchText || 
+                    productName.includes(searchText) || 
+                    category.includes(searchText) || 
+                    supplier.includes(searchText);
+
+                // Check if row matches current filter
+                const matchesFilter = currentFilter === 'all' || status === currentFilter;
+
+                // Show/hide row based on both criteria
+                if (matchesSearch && matchesFilter) {
+                    row.style.display = '';
+                    visibleCount++;
+                    // Add low stock highlighting
+                    if (status === 'low') {
+                        row.style.backgroundColor = '#fff3cd';
+                    } else if (status === 'out') {
+                        row.style.backgroundColor = '#f8d7da';
+                    } else {
+                        row.style.backgroundColor = '';
+                    }
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+
+            // Show/hide "no results" message
+            const noResultsMsg = document.getElementById('noResultsMessage');
+            if (visibleCount === 0) {
+                noResultsMsg.style.display = 'block';
+                document.getElementById('productsTable').style.display = 'none';
+            } else {
+                noResultsMsg.style.display = 'none';
+                document.getElementById('productsTable').style.display = '';
+            }
+
+            updateProductCount();
+        }
+
+        function filterProducts(filter) {
+            currentFilter = filter;
+            
+            // Update active button styling
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector('[data-filter="' + filter + '"]').classList.add('active');
+
+            // Apply filter
+            applySearch();
+        }
+
+        function updateFilterCounts() {
+            let allCount = 0;
+            let enoughCount = 0;
+            let lowCount = 0;
+            let outCount = 0;
+
+            document.querySelectorAll('.product-row').forEach(row => {
+                allCount++;
+                const status = row.dataset.status;
+                if (status === 'enough') enoughCount++;
+                else if (status === 'low') lowCount++;
+                else if (status === 'out') outCount++;
+            });
+
+            document.querySelector('[data-count="all"]').textContent = '(' + allCount + ')';
+            document.querySelector('[data-count="enough"]').textContent = '(' + enoughCount + ')';
+            document.querySelector('[data-count="low"]').textContent = '(' + lowCount + ')';
+            document.querySelector('[data-count="out"]').textContent = '(' + outCount + ')';
+        }
+
+        function updateProductCount() {
+            let visibleCount = 0;
+            document.querySelectorAll('.product-row').forEach(row => {
+                if (row.style.display !== 'none') {
+                    visibleCount++;
+                }
+            });
+            document.getElementById('productCount').textContent = visibleCount;
+        }
+
+        // Edit product (placeholder - can be enhanced with modal)
+        function editProduct(id) {
+            alert('Edit product ' + id + ' - this feature will be enhanced soon');
+        }
+
+        // Delete product with confirmation
+        function deleteProduct(id) {
+            if(confirm('Are you sure you want to delete this product? This action cannot be undone.')) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/products/delete/' + id;
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+
+        // Form validation enhancement
+        document.getElementById('productForm').addEventListener('submit', function(e) {
+            const productName = this.product_name.value.trim();
+            const category = this.category.value.trim();
+            const sellingPrice = parseFloat(this.selling_price.value);
+            const costPrice = parseFloat(this.cost_price.value);
+            const stockQty = parseInt(this.stock_quantity.value);
+            const reorderLevel = parseInt(this.reorder_level.value);
+
+            // Validation checks
+            if (productName.length < 2) {
+                e.preventDefault();
+                alert('⚠️ Product name must be at least 2 characters long');
+                return false;
+            }
+
+            if (!category) {
+                e.preventDefault();
+                alert('⚠️ Please select a category');
+                return false;
+            }
+
+            if (isNaN(sellingPrice) || sellingPrice < 0) {
+                e.preventDefault();
+                alert('⚠️ Selling price must be a valid number ≥ 0');
+                return false;
+            }
+
+            if (isNaN(costPrice) || costPrice < 0) {
+                e.preventDefault();
+                alert('⚠️ Cost price must be a valid number ≥ 0');
+                return false;
+            }
+
+            if (isNaN(stockQty) || stockQty < 0) {
+                e.preventDefault();
+                alert('⚠️ Stock quantity must be a valid number ≥ 0');
+                return false;
+            }
+
+            if (isNaN(reorderLevel) || reorderLevel < 0) {
+                e.preventDefault();
+                alert('⚠️ Reorder level must be a valid number ≥ 0');
+                return false;
+            }
+
+            if (stockQty > 0 && costPrice >= sellingPrice && costPrice > 0) {
+                const confirm_msg = confirm('⚠️ Warning: Cost price (R' + costPrice.toFixed(2) + ') is greater than or equal to selling price (R' + sellingPrice.toFixed(2) + '). This will result in losses. Continue anyway?');
+                if (!confirm_msg) {
+                    e.preventDefault();
+                    return false;
+                }
+            }
+
+            return true;
+        });
+    </script>
 </body>
 </html>

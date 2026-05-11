@@ -7,7 +7,7 @@ import io
 from reportlab.lib.pagesizes import letter, A4
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, PageBreak
+from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, PageBreak, HRFlowable
 from reportlab.lib.units import inch
 
 app = Flask(__name__)
@@ -538,6 +538,22 @@ def index():
 
     conn.close()
 
+    # Get recent sales for dashboard
+    recent_sales = get_recent_sales(5)
+
+    # Get data for enhanced dashboard
+    credit_customers = get_customers()
+    credit_customers_count = len(credit_customers) if credit_customers else 0
+    
+    low_stock_warnings = get_low_stock_warnings()
+    ai_alerts_count = len(low_stock_warnings) if low_stock_warnings else 0
+    
+    recent_stock_receipts = get_recent_stock_receipts(5) if get_recent_stock_receipts else []
+    recent_credit_transactions = get_recent_transactions(5) if get_recent_transactions else []
+    
+    trending_products = get_trending_products(1)
+    best_selling_product = trending_products[0] if trending_products else None
+
     return render_template('dashboard.html',
                          products=products,
                          scores=scores,
@@ -545,7 +561,14 @@ def index():
                          total_products=total_products,
                          low_stock_products=low_stock_products,
                          total_stock=total_stock,
-                         total_sales=total_sales)
+                         total_sales=total_sales,
+                         recent_sales=recent_sales,
+                         credit_customers_count=credit_customers_count,
+                         ai_alerts_count=ai_alerts_count,
+                         recent_stock_receipts=recent_stock_receipts,
+                         recent_credit_transactions=recent_credit_transactions,
+                         low_stock_warnings=low_stock_warnings,
+                         best_selling_product=best_selling_product)
 
 # --- 4. PRODUCTS/INVENTORY PAGE - CRUD ---
 @app.route('/products', methods=['GET', 'POST'])
@@ -1393,7 +1416,18 @@ def export_sales():
     if not session.get('logged_in'):
         return redirect(url_for('login'))
 
-    report_date = request.args.get('date', date.today().strftime('%Y-%m-%d'))
+    # Get date from query params, with validation
+    report_date = request.args.get('date', '').strip()
+    if not report_date:
+        report_date = date.today().strftime('%Y-%m-%d')
+    
+    # Validate date format
+    try:
+        from datetime import datetime
+        datetime.strptime(report_date, '%Y-%m-%d')
+    except ValueError:
+        return redirect(url_for('reports', error='Invalid date format. Please use YYYY-MM-DD'))
+    
     daily_sales = get_daily_sales(report_date)
 
     # Create CSV with proper encoding
@@ -1440,7 +1474,19 @@ def export_sales_pdf():
     if not session.get('logged_in'):
         return redirect(url_for('login'))
 
-    report_date = request.args.get('date', date.today().strftime('%Y-%m-%d'))
+    # Get date from query params, with validation
+    report_date = request.args.get('date', '').strip()
+    if not report_date:
+        report_date = date.today().strftime('%Y-%m-%d')
+    
+    # Validate date format
+    try:
+        from datetime import datetime as dt
+        dt.strptime(report_date, '%Y-%m-%d')
+        report_datetime = dt.now()
+    except ValueError:
+        return redirect(url_for('reports', error='Invalid date format. Please use YYYY-MM-DD'))
+    
     daily_sales = get_daily_sales(report_date)
 
     # Create PDF
@@ -1450,67 +1496,297 @@ def export_sales_pdf():
     elements = []
     styles = getSampleStyleSheet()
 
-    # Title
-    title_style = ParagraphStyle(
-        'CustomTitle',
+    # ===== REPORT HEADER =====
+    header_style = ParagraphStyle(
+        'ReportHeader',
         parent=styles['Heading1'],
-        fontSize=18,
+        fontSize=22,
         textColor=colors.HexColor('#0054a6'),
-        spaceAfter=6,
+        spaceAfter=3,
+        alignment=1,
+        fontName='Helvetica-Bold'
+    )
+    subtitle_style = ParagraphStyle(
+        'Subtitle',
+        parent=styles['Normal'],
+        fontSize=10,
+        textColor=colors.HexColor('#666666'),
+        spaceAfter=2,
         alignment=1
     )
-    elements.append(Paragraph('EZASEKASI SPAZA SHOP', title_style))
-    elements.append(Paragraph('Daily Sales Report', styles['Heading2']))
-    elements.append(Paragraph(f'Date: {report_date}', styles['Normal']))
-    elements.append(Spacer(1, 0.3*inch))
+    info_style = ParagraphStyle(
+        'InfoStyle',
+        parent=styles['Normal'],
+        fontSize=9,
+        textColor=colors.HexColor('#333333'),
+        spaceAfter=1
+    )
 
-    # Table data
-    table_data = [['Sale ID', 'Product', 'Cashier', 'Quantity', 'Amount', 'Timestamp']]
+    # Header content
+    elements.append(Paragraph('📊 EZASEKASI SPAZA SHOP', header_style))
+    elements.append(Paragraph('Daily Sales Report', ParagraphStyle(
+        'ReportTitle',
+        parent=styles['Heading2'],
+        fontSize=16,
+        textColor=colors.HexColor('#ed1c24'),
+        spaceAfter=6,
+        alignment=1
+    )))
+    
+    # Report metadata
+    elements.append(Paragraph(f'Report Date: {report_date}', info_style))
+    elements.append(Paragraph(f'Generated: {report_datetime.strftime("%d %B %Y at %H:%M:%S")}', info_style))
+    elements.append(Paragraph('Report Type: Daily Sales Analysis', info_style))
+    elements.append(Spacer(1, 0.2*inch))
 
-    total_sales = 0
+    # Horizontal line
+    line = HRFlowable(width="100%", thickness=2, color=colors.HexColor('#0054a6'))
+    elements.append(line)
+    elements.append(Spacer(1, 0.2*inch))
+
+    # ===== HANDLE NO SALES DATA =====
+    if not daily_sales:
+        no_sales_style = ParagraphStyle(
+            'NoSales',
+            parent=styles['Normal'],
+            fontSize=12,
+            textColor=colors.HexColor('#ed1c24'),
+            alignment=1,
+            spaceAfter=12
+        )
+        elements.append(Spacer(1, 0.5*inch))
+        elements.append(Paragraph('📭 No Sales Data Available', no_sales_style))
+        elements.append(Paragraph('There were no sales recorded on this date.', styles['Normal']))
+        elements.append(Spacer(1, 0.5*inch))
+        
+        # Build and return
+        doc.build(elements)
+        pdf_buffer.seek(0)
+        response = make_response(pdf_buffer.getvalue())
+        response.headers['Content-Disposition'] = f'attachment; filename=sales_report_{report_date}.pdf'
+        response.headers['Content-Type'] = 'application/pdf'
+        return response
+
+    # ===== SALES SUMMARY SECTION =====
+    summary_data = {
+        'total_sales': 0,
+        'total_quantity': 0,
+        'transaction_count': len(daily_sales),
+        'products_sold': {}
+    }
+
     for sale in daily_sales:
         amount = float(sale['total_amount'] or 0)
+        quantity = int(sale['quantity_sold'] or 0)
+        product = sale['product_name'] or 'Unknown'
+        
+        summary_data['total_sales'] += amount
+        summary_data['total_quantity'] += quantity
+        
+        if product not in summary_data['products_sold']:
+            summary_data['products_sold'][product] = {'qty': 0, 'amount': 0}
+        summary_data['products_sold'][product]['qty'] += quantity
+        summary_data['products_sold'][product]['amount'] += amount
+
+    avg_sale = summary_data['total_sales'] / summary_data['transaction_count'] if summary_data['transaction_count'] > 0 else 0
+    best_product = max(summary_data['products_sold'].items(), key=lambda x: x[1]['qty'])[0] if summary_data['products_sold'] else 'N/A'
+
+    # Summary cards in grid format
+    summary_title = ParagraphStyle(
+        'SummaryTitle',
+        parent=styles['Heading2'],
+        fontSize=13,
+        textColor=colors.HexColor('#0054a6'),
+        spaceAfter=8,
+        fontName='Helvetica-Bold'
+    )
+    elements.append(Paragraph('📊 Sales Summary', summary_title))
+
+    summary_table_data = [
+        ['Total Sales', f"R{summary_data['total_sales']:.2f}"],
+        ['Total Transactions', str(summary_data['transaction_count'])],
+        ['Total Units Sold', str(summary_data['total_quantity'])],
+        ['Average Sale Amount', f"R{avg_sale:.2f}"],
+        ['Best-Selling Product', best_product]
+    ]
+
+    summary_table = Table(summary_table_data, colWidths=[2.5*inch, 2.5*inch])
+    summary_table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (0, -1), colors.HexColor('#f0f0f0')),
+        ('BACKGROUND', (1, 0), (1, -1), colors.HexColor('#ffffff')),
+        ('TEXTCOLOR', (0, 0), (0, -1), colors.HexColor('#0054a6')),
+        ('FONTNAME', (0, 0), (0, -1), 'Helvetica-Bold'),
+        ('FONTNAME', (1, 0), (1, -1), 'Helvetica'),
+        ('FONTSIZE', (0, 0), (-1, -1), 10),
+        ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
+        ('TOPPADDING', (0, 0), (-1, -1), 8),
+        ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#cccccc')),
+    ]))
+
+    elements.append(summary_table)
+    elements.append(Spacer(1, 0.25*inch))
+
+    # ===== DETAILED SALES TABLE =====
+    table_title = ParagraphStyle(
+        'TableTitle',
+        parent=styles['Heading2'],
+        fontSize=13,
+        textColor=colors.HexColor('#0054a6'),
+        spaceAfter=8,
+        fontName='Helvetica-Bold'
+    )
+    elements.append(Paragraph('📋 Detailed Sales Transactions', table_title))
+
+    table_data = [['Sale ID', 'Product', 'Quantity', 'Price', 'Total Amount', 'Cashier', 'Time']]
+
+    for sale in daily_sales:
+        amount = float(sale['total_amount'] or 0)
+        quantity = int(sale['quantity_sold'] or 0)
+        unit_price = amount / quantity if quantity > 0 else 0
+        
         table_data.append([
             str(sale['sale_id']),
             sale['product_name'] or 'Unknown',
-            sale['full_name'] or 'Unknown',
-            str(sale['quantity_sold']),
+            str(quantity),
+            f"R{unit_price:.2f}",
             f"R{amount:.2f}",
-            sale['sale_timestamp'].strftime('%H:%M:%S') if sale['sale_timestamp'] else ''
+            sale['full_name'] or 'Unknown',
+            sale['sale_timestamp'].strftime('%H:%M:%S') if sale['sale_timestamp'] else 'N/A'
         ])
-        total_sales += amount
 
     # Add total row
-    table_data.append(['', '', '', 'TOTAL', f'R{total_sales:.2f}', ''])
+    table_data.append(['', '', '', 'TOTAL', f"R{summary_data['total_sales']:.2f}", '', ''])
 
-    # Create table
-    table = Table(table_data, colWidths=[0.8*inch, 2*inch, 1.5*inch, 0.8*inch, 1*inch, 1.2*inch])
+    table = Table(table_data, colWidths=[0.7*inch, 1.8*inch, 0.65*inch, 0.65*inch, 1*inch, 1.3*inch, 0.75*inch])
     table.setStyle(TableStyle([
         ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#0054a6')),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
         ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
         ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-        ('FONTSIZE', (0, 0), (-1, 0), 11),
-        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-        ('BACKGROUND', (0, -1), (-1, -1), colors.HexColor('#FFCC00')),
+        ('FONTSIZE', (0, 0), (-1, 0), 9),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 10),
+        ('TOPPADDING', (0, 0), (-1, 0), 10),
+        ('BACKGROUND', (0, -1), (-1, -1), colors.HexColor('#ffcc00')),
         ('FONTNAME', (0, -1), (-1, -1), 'Helvetica-Bold'),
-        ('GRID', (0, 0), (-1, -1), 1, colors.black),
-        ('ROWBACKGROUNDS', (0, 1), (-1, -2), [colors.white, colors.HexColor('#f0f0f0')]),
+        ('FONTSIZE', (0, -1), (-1, -1), 10),
+        ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#cccccc')),
+        ('ROWBACKGROUNDS', (0, 1), (-1, -2), [colors.white, colors.HexColor('#f9f9f9')]),
+        ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ('LEFTPADDING', (0, 0), (-1, -1), 6),
+        ('RIGHTPADDING', (0, 0), (-1, -1), 6),
     ]))
 
     elements.append(table)
-    elements.append(Spacer(1, 0.3*inch))
+    elements.append(Spacer(1, 0.2*inch))
 
-    # Summary
-    summary_style = ParagraphStyle(
-        'Summary',
+    # ===== LOW STOCK WARNING SECTION =====
+    low_stock_products = get_low_stock_warnings()
+    if low_stock_products:
+        warning_title = ParagraphStyle(
+            'WarningTitle',
+            parent=styles['Heading2'],
+            fontSize=13,
+            textColor=colors.HexColor('#ed1c24'),
+            spaceAfter=8,
+            fontName='Helvetica-Bold'
+        )
+        elements.append(Paragraph('⚠️ Low Stock Alert', warning_title))
+
+        warning_data = [['Product', 'Current Stock', 'Reorder Level', 'Shortage', 'Supplier']]
+        for product in low_stock_products[:10]:  # Show top 10
+            shortage = product['reorder_level'] - product['stock_quantity']
+            warning_data.append([
+                product['product_name'],
+                str(product['stock_quantity']),
+                str(product['reorder_level']),
+                str(shortage),
+                product['supplier_name'] or 'N/A'
+            ])
+
+        warning_table = Table(warning_data, colWidths=[1.8*inch, 1.2*inch, 1.2*inch, 1*inch, 1.5*inch])
+        warning_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#ed1c24')),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 9),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 8),
+            ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#ffcccc')),
+            ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#fff5f5')]),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+        ]))
+
+        elements.append(warning_table)
+        elements.append(Spacer(1, 0.2*inch))
+
+    # ===== AI INSIGHTS SECTION =====
+    trending = get_trending_products(3)
+    if trending:
+        ai_title = ParagraphStyle(
+            'AITitle',
+            parent=styles['Heading2'],
+            fontSize=13,
+            textColor=colors.HexColor('#0054a6'),
+            spaceAfter=8,
+            fontName='Helvetica-Bold'
+        )
+        elements.append(Paragraph('🤖 AI Insights & Recommendations', ai_title))
+
+        # Top selling products
+        ai_data = [['🏆 Top Performing Products', 'Units Sold']]
+        for trend in trending:
+            ai_data.append([
+                trend['product_name'],
+                str(trend['total_sold'])
+            ])
+
+        ai_table = Table(ai_data, colWidths=[3.5*inch, 1.5*inch])
+        ai_table.setStyle(TableStyle([
+            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor('#ffcc00')),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.HexColor('#0054a6')),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('FONTSIZE', (0, 0), (-1, 0), 10),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('GRID', (0, 0), (-1, -1), 1, colors.HexColor('#f0d000')),
+            ('ROWBACKGROUNDS', (0, 1), (-1, -1), [colors.white, colors.HexColor('#fffef0')]),
+            ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
+            ('BOTTOMPADDING', (0, 0), (-1, -1), 8),
+        ]))
+
+        elements.append(ai_table)
+        elements.append(Spacer(1, 0.15*inch))
+
+        # Recommendations
+        rec_style = ParagraphStyle(
+            'RecStyle',
+            parent=styles['Normal'],
+            fontSize=9,
+            textColor=colors.HexColor('#333333'),
+            spaceAfter=4
+        )
+        elements.append(Paragraph('💡 <b>Recommendations:</b>', rec_style))
+        if summary_data['total_sales'] > 1000:
+            elements.append(Paragraph('✓ Strong sales performance. Consider increasing stock for best-selling products.', rec_style))
+        if len(low_stock_products) > 0:
+            elements.append(Paragraph(f'✓ {len(low_stock_products)} products below reorder level. Schedule urgent restocking.', rec_style))
+        elements.append(Paragraph(f'✓ Average sale value is R{avg_sale:.2f}. Monitor pricing and promotions accordingly.', rec_style))
+
+    # ===== FOOTER =====
+    elements.append(Spacer(1, 0.3*inch))
+    footer_line = HRFlowable(width="100%", thickness=1, color=colors.HexColor('#cccccc'))
+    elements.append(footer_line)
+    
+    footer_style = ParagraphStyle(
+        'Footer',
         parent=styles['Normal'],
-        fontSize=11,
-        textColor=colors.HexColor('#0054a6'),
-        spaceAfter=6
+        fontSize=8,
+        textColor=colors.HexColor('#999999'),
+        alignment=1
     )
-    elements.append(Paragraph(f'<b>Total Sales Amount: R{total_sales:.2f}</b>', summary_style))
-    elements.append(Paragraph(f'<b>Total Transactions: {len(daily_sales)}</b>', summary_style))
+    elements.append(Paragraph('This report was automatically generated by Ezasekasi Spaza Shop System', footer_style))
+    elements.append(Paragraph(f'Confidential - For Internal Use Only • Report ID: SR-{report_date.replace("-", "")}', footer_style))
 
     # Build PDF
     doc.build(elements)

@@ -134,6 +134,10 @@ This project was developed by:
 - **Happiness** - Database & POS Design
 - **Mapule** - Inventory UI & UX
 - **Kearabetswe** - Backend Integration
+- **Tau Thamaga** - Quality Assurance & Testing
+- **Percy Thotse** - Documentation & Support
+- **Tshwarelo Mahlako** - API Development
+- **Samkelisiwe Mngadi** - User Experience Design
 
 ## University Information
 

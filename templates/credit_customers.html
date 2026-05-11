@@ -2,474 +2,243 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Credit Customers | Ezasekasi Spaza System</title>
-    <style>
-        :root {
-            --tut-blue: #0054a6;
-            --tut-blue-light: #1e6ab8;
-            --tut-yellow: #ffcc00;
-            --tut-red: #ed1c24;
-            --tut-red-light: #f54747;
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.08);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; background: #f8f9fa; color: #2c3e50; }
-
-        .user-bar {
-            text-align: right;
-            background: #fff;
-            color: var(--tut-blue);
-            font-weight: 600;
-            padding: 12px 30px;
-            border-bottom: 1px solid #e8eef5;
-            font-size: 0.9em;
-        }
-
-        .user-bar a {
-            color: var(--tut-red);
-            text-decoration: none;
-            transition: var(--transition);
-            font-weight: 600;
-        }
-
-        .user-bar a:hover {
-            color: var(--tut-red-light);
-            text-decoration: underline;
-        }
-
-        .navbar {
-            background: var(--tut-blue);
-            color: white;
-            padding: 18px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 5px solid var(--tut-yellow);
-            box-shadow: var(--shadow-md);
-        }
-
-        .navbar-brand { font-size: 1.5em; font-weight: 700; }
-        .navbar-campus { font-size: 0.9em; opacity: 0.95; }
-
-        .navbar-menu {
-            display: flex;
-            gap: 20px;
-            list-style: none;
-        }
-
-        .navbar-menu a {
-            color: white;
-            text-decoration: none;
-            padding: 8px 14px;
-            border-radius: 6px;
-            transition: var(--transition);
-            font-weight: 500;
-        }
-
-        .navbar-menu a:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-1px);
-        }
-
-        .navbar-menu a.active {
-            background: var(--tut-yellow);
-            color: var(--tut-blue);
-            font-weight: 700;
-        }
-
-        .container { max-width: 1400px; margin: 30px auto; padding: 30px; }
-
-        .page-title {
-            color: var(--tut-blue);
-            margin-bottom: 35px;
-            border-bottom: 3px solid var(--tut-yellow);
-            padding-bottom: 18px;
-            font-size: 2em;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-        }
-
-        .alert {
-            padding: 16px 18px;
-            border-radius: 8px;
-            margin-bottom: 24px;
-            border-left: 5px solid;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 500;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .alert-success {
-            background: #d4edda;
-            color: #1e7e34;
-            border-left-color: #28a745;
-        }
-
-        .alert-error {
-            background: #f8d7da;
-            color: #b8181f;
-            border-left-color: var(--tut-red);
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 28px;
-            margin-bottom: 28px;
-        }
-
-        .form-section {
-            background: white;
-            padding: 28px;
-            border-radius: 10px;
-            box-shadow: var(--shadow-sm);
-            border-top: 4px solid var(--tut-blue);
-            border: 1px solid #e8eef5;
-        }
-
-        .form-title {
-            color: var(--tut-blue);
-            font-size: 1.35em;
-            margin-bottom: 24px;
-            font-weight: 600;
-            letter-spacing: -0.3px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 18px;
-        }
-
-        label {
-            color: var(--tut-blue);
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 0.9em;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        input, select {
-            padding: 12px 14px;
-            border: 2px solid #d5dce3;
-            border-radius: 6px;
-            font-size: 0.95em;
-            transition: var(--transition);
-            background: #fafbfc;
-            font-family: inherit;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--tut-blue);
-            background: white;
-            box-shadow: 0 0 0 3px rgba(0, 84, 166, 0.1);
-        }
-
-        .btn {
-            padding: 12px 26px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.85em;
-            transition: var(--transition);
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-        }
-
-        .btn-primary {
-            background: var(--tut-blue);
-            color: white;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .btn-primary:hover {
-            background: var(--tut-blue-light);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .btn-danger {
-            background: var(--tut-red);
-            color: white;
-            box-shadow: var(--shadow-sm);
-            padding: 8px 16px;
-            font-size: 0.8em;
-        }
-
-        .btn-danger:hover {
-            background: var(--tut-red-light);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .button-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 22px;
-        }
-
-        .button-group .btn-primary {
-            flex: 1;
-        }
-
-        .table-section {
-            background: white;
-            padding: 28px;
-            border-radius: 10px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid #e8eef5;
-        }
-
-        .table-title {
-            color: var(--tut-blue);
-            font-size: 1.35em;
-            margin-bottom: 24px;
-            font-weight: 600;
-            letter-spacing: -0.3px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9em;
-        }
-
-        th {
-            background: var(--tut-blue);
-            color: white;
-            padding: 14px 12px;
-            text-align: left;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-            text-transform: uppercase;
-            font-size: 0.85em;
-        }
-
-        td {
-            padding: 13px 12px;
-            border-bottom: 1px solid #e8eef5;
-        }
-
-        tbody tr:nth-child(even) {
-            background: #f8f9fa;
-        }
-
-        tbody tr:hover {
-            background: #f0f4f8;
-            transition: background 0.2s ease;
-        }
-
-        .empty-message {
-            text-align: center;
-            padding: 48px 20px;
-            color: #95a3b3;
-            font-size: 0.95em;
-        }
-
-        .required {
-            color: var(--tut-red);
-            font-weight: 600;
-        }
-
-        .status-badge {
-            display: inline-block;
-            padding: 6px 12px;
-            border-radius: 4px;
-            font-size: 0.8em;
-            font-weight: 600;
-            text-transform: uppercase;
-        }
-
-        .status-good {
-            background: #d4edda;
-            color: #1e7e34;
-        }
-
-        .status-warning {
-            background: #fff3cd;
-            color: #856404;
-        }
-
-        .status-critical {
-            background: #f8d7da;
-            color: #b8181f;
-        }
-
-        @media (max-width: 1024px) {
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
-
-            .button-group {
-                flex-direction: column;
-            }
-
-            .button-group .btn {
-                flex: 1;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-                margin: 16px auto;
-            }
-
-            .page-title {
-                font-size: 1.6em;
-            }
-
-            .form-section,
-            .table-section {
-                padding: 20px;
-            }
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Customers | Ezasekasi Spaza Shop</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <div class="wrapper">
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                EZASEKASI
+                <small>Spaza Shop System</small>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="/"><span class="sidebar-icon">📊</span> Dashboard</a></li>
+                <li><a href="/products"><span class="sidebar-icon">📦</span> Products</a></li>
+                <li><a href="/sales"><span class="sidebar-icon">💳</span> Sales/POS</a></li>
+                <li><a href="/suppliers"><span class="sidebar-icon">🏢</span> Suppliers</a></li>
+                <li><a href="/credit-customers" class="active"><span class="sidebar-icon">👥</span> Credit Customers</a></li>
+                <li><a href="/reports"><span class="sidebar-icon">📈</span> Reports</a></li>
+                <li><a href="/logout"><span class="sidebar-icon">🚪</span> Logout</a></li>
+            </ul>
+        </aside>
 
-<div class="user-bar">
-    Logged in as: {{ user }} | <a href="/logout">Logout</a>
-</div>
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <!-- TOP BAR -->
+            <div class="top-bar">
+                <h1 style="margin: 0; font-size: 1.35rem;">Ezasekasi Management System</h1>
+                <div class="user-info">
+                    <span class="user-greeting">Welcome, {{ user }}! 👋</span>
+                    <a href="/logout" class="logout-btn">Logout</a>
+                </div>
+            </div>
 
-<div class="navbar">
-    <div>
-        <div class="navbar-brand">EZASEKASI SPAZA SHOP</div>
-        <div class="navbar-campus">Tshwane University of Technology | Emalahleni</div>
-    </div>
-    <ul class="navbar-menu">
-        <li><a href="/">Dashboard</a></li>
-        <li><a href="/products">Products/Inventory</a></li>
-        <li><a href="/sales">Sales/POS</a></li>
-        <li><a href="/suppliers">Suppliers</a></li>
-        <li><a href="/credit-customers" class="active">Credit Customers</a></li>
-        <li><a href="/reports">Reports</a></li>
-    </ul>
-</div>
-
-<div class="container">
-    <h1 class="page-title">💳 Credit Customers</h1>
-
-    {% if success %}
-    <div class="alert alert-success">
-        <strong>✓ Success:</strong> {{ success }}
-    </div>
-    {% endif %}
-
-    {% if error %}
-    <div class="alert alert-error">
-        <strong>✗ Error:</strong> {{ error }}
-    </div>
-    {% endif %}
-
-    <div class="grid-2">
-        <!-- ADD CUSTOMER FORM -->
-        <div>
-            <div class="form-section">
-                <div class="form-title">➕ Add Credit Customer</div>
-                <form method="POST" action="/credit-customers/add">
-                    <div class="form-group">
-                        <label for="customer_name">Full Name <span class="required">*</span></label>
-                        <input type="text" id="customer_name" name="customer_name" required placeholder="Customer full name">
+            <!-- CONTENT AREA -->
+            <div class="content">
+                <div class="container">
+                    <!-- PAGE HEADER -->
+                    <div class="page-header">
+                        <h1 class="page-title">👥 Credit Customer Management</h1>
+                        <p class="page-subtitle">Manage customer credit limits, sales, and payments</p>
                     </div>
-                    <div class="form-group">
-                        <label for="contact_phone">Phone Number</label>
-                        <input type="text" id="contact_phone" name="contact_phone" placeholder="Contact number">
+
+                    <!-- ALERTS -->
+                    {% if error %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                    {% endif %}
+                    {% if success %}
+                    <div class="alert alert-success">{{ success }}</div>
+                    {% endif %}
+
+                    <!-- ADD CUSTOMER FORM -->
+                    <div class="card" style="margin-bottom: 40px;">
+                        <div class="card-header">
+                            <h3 class="card-title">➕ Add New Credit Customer</h3>
+                        </div>
+                        <div class="card-body">
+                            <form action="/credit-customers/add" method="POST" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; align-items: end;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label>Full Name *</label>
+                                    <input type="text" name="full_name" placeholder="Customer name" required>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label>Phone</label>
+                                    <input type="tel" name="phone" placeholder="0xx xxx xxxx">
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label>Credit Limit (R) *</label>
+                                    <input type="number" name="credit_limit" step="0.01" placeholder="0.00" required>
+                                </div>
+                                <button type="submit" class="btn btn-success">Add Customer</button>
+                            </form>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" placeholder="customer@example.com">
+
+                    <!-- CREDIT SALE FORM -->
+                    <div class="card" style="margin-bottom: 40px;">
+                        <div class="card-header">
+                            <h3 class="card-title">🛍️ Record Credit Sale</h3>
+                        </div>
+                        <div class="card-body">
+                            <form action="/credit-customers/credit-sale" method="POST" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; align-items: end;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label>Customer *</label>
+                                    <select name="customer_id" required>
+                                        <option value="">-- Select Customer --</option>
+                                        {% for customer in customers %}
+                                        <option value="{{ customer.customer_id }}">{{ customer.full_name }} (Balance: R{{ "%.2f"|format(customer.current_balance) }})</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label>Product *</label>
+                                    <select name="product_id" required>
+                                        <option value="">-- Select Product --</option>
+                                        {% for product in products %}
+                                        <option value="{{ product.product_id }}">{{ product.product_name }} - R{{ "%.2f"|format(product.selling_price) }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label>Quantity *</label>
+                                    <input type="number" name="quantity" min="1" placeholder="1" required>
+                                </div>
+                                <button type="submit" class="btn btn-success">Record Credit Sale</button>
+                            </form>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="max_credit">Max Credit Limit (R) <span class="required">*</span></label>
-                        <input type="number" id="max_credit" name="max_credit" step="0.01" min="0" required placeholder="0.00">
+
+                    <!-- PAYMENT FORM -->
+                    <div class="card" style="margin-bottom: 40px;">
+                        <div class="card-header">
+                            <h3 class="card-title">💳 Record Payment</h3>
+                        </div>
+                        <div class="card-body">
+                            <form action="/credit-customers/payment" method="POST" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; align-items: end;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label>Customer *</label>
+                                    <select name="customer_id" required>
+                                        <option value="">-- Select Customer --</option>
+                                        {% for customer in customers %}
+                                        <option value="{{ customer.customer_id }}">{{ customer.full_name }} (Owes: R{{ "%.2f"|format(customer.current_balance) }})</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label>Payment Amount (R) *</label>
+                                    <input type="number" name="amount" step="0.01" placeholder="0.00" required>
+                                </div>
+                                <button type="submit" class="btn btn-success">Record Payment</button>
+                            </form>
+                        </div>
                     </div>
-                    <div class="button-group">
-                        <button type="submit" class="btn btn-primary">Add Customer</button>
+
+                    <!-- CUSTOMERS LIST -->
+                    <div class="card" style="margin-bottom: 40px;">
+                        <div class="card-header">
+                            <h3 class="card-title">📋 Credit Customers</h3>
+                            <span style="color: #7f8c8d;">{{ customers|length }} customers</span>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Customer Name</th>
+                                        <th>Phone</th>
+                                        <th>Credit Limit</th>
+                                        <th>Current Balance</th>
+                                        <th>Available Credit</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for customer in customers %}
+                                    <tr>
+                                        <td><strong>{{ customer.full_name }}</strong></td>
+                                        <td>{{ customer.phone or '-' }}</td>
+                                        <td>R{{ "%.2f"|format(customer.credit_limit) }}</td>
+                                        <td>R{{ "%.2f"|format(customer.current_balance) }}</td>
+                                        <td>R{{ "%.2f"|format(customer.credit_limit - customer.current_balance) }}</td>
+                                        <td>
+                                            {% if customer.current_balance >= customer.credit_limit %}
+                                            <span class="badge badge-danger">⚠️ At Limit</span>
+                                            {% elif customer.current_balance > 0 %}
+                                            <span class="badge badge-warning">Owing</span>
+                                            {% else %}
+                                            <span class="badge badge-success">✓ Good</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <button onclick="editCustomer({{ customer.customer_id }})" class="btn btn-primary btn-sm">Edit</button>
+                                            <button onclick="deleteCustomer({{ customer.customer_id }})" class="btn btn-danger btn-sm">Delete</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                </form>
+
+                    <!-- RECENT TRANSACTIONS -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">📋 Recent Credit Transactions</h3>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Customer</th>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Amount</th>
+                                        <th>Type</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for trans in transactions %}
+                                    <tr>
+                                        <td>{{ trans.full_name or 'N/A' }}</td>
+                                        <td>{{ trans.product_name or '-' }}</td>
+                                        <td>{{ trans.quantity or '-' }}</td>
+                                        <td>R{{ "%.2f"|format(trans.amount or 0) }}</td>
+                                        <td>
+                                            {% if trans.transaction_type == 'SALE' %}
+                                            <span class="badge badge-warning">SALE</span>
+                                            {% else %}
+                                            <span class="badge badge-success">PAYMENT</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ trans.transaction_date.strftime('%d %b %Y %H:%M') if trans.transaction_date else 'N/A' }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-
-        <!-- CUSTOMERS LIST -->
-        <div>
-            <div class="table-section">
-                <div class="table-title">👥 Credit Customers</div>
-                {% if customers %}
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Customer Name</th>
-                            <th>Contact</th>
-                            <th>Max Credit</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for customer in customers %}
-                        <tr>
-                            <td><strong>{{ customer.customer_name }}</strong></td>
-                            <td>{{ customer.contact_phone or '-' }}</td>
-                            <td>R{{ "%.2f"|format(customer.max_credit_limit) }}</td>
-                            <td>
-                                <a href="/credit-customers/delete/{{ customer.customer_id }}" onclick="return confirm('Delete this customer?')" class="btn btn-danger" style="text-decoration:none; display:inline-block;">Delete</a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                {% else %}
-                <div class="empty-message">No credit customers added yet.</div>
-                {% endif %}
-            </div>
-        </div>
     </div>
 
-    <!-- CREDIT TRANSACTIONS -->
-    <div class="table-section">
-        <div class="table-title">📝 Recent Credit Transactions</div>
-        {% if transactions %}
-        <table>
-            <thead>
-                <tr>
-                    <th>Customer</th>
-                    <th>Amount</th>
-                    <th>Type</th>
-                    <th>Date</th>
-                    <th>Balance</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for transaction in transactions %}
-                <tr>
-                    <td><strong>{{ transaction.customer_name }}</strong></td>
-                    <td>R{{ "%.2f"|format(abs(transaction.amount)) }}</td>
-                    <td>
-                        {% if transaction.amount < 0 %}
-                        <span class="status-badge status-warning">Paid</span>
-                        {% else %}
-                        <span class="status-badge status-critical">Owed</span>
-                        {% endif %}
-                    </td>
-                    <td>{{ transaction.transaction_date.strftime('%Y-%m-%d') if transaction.transaction_date else 'N/A' }}</td>
-                    <td>R{{ "%.2f"|format(transaction.balance) }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        {% else %}
-        <div class="empty-message">No transactions recorded.</div>
-        {% endif %}
-    </div>
-</div>
-
+    <script>
+        function editCustomer(id) {
+            alert('Edit customer ' + id);
+        }
+        function deleteCustomer(id) {
+            if(confirm('Delete this customer?')) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/credit-customers/delete/' + id;
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    </script>
 </body>
 </html>

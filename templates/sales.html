@@ -2,518 +2,118 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Sales/POS | Ezasekasi Spaza System</title>
-    <style>
-        :root {
-            --tut-blue: #0054a6;
-            --tut-blue-light: #1e6ab8;
-            --tut-yellow: #ffcc00;
-            --tut-red: #ed1c24;
-            --tut-red-light: #f54747;
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.08);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; background: #f8f9fa; color: #2c3e50; }
-
-        .user-bar {
-            text-align: right;
-            background: #fff;
-            color: var(--tut-blue);
-            font-weight: 600;
-            padding: 12px 30px;
-            border-bottom: 1px solid #e8eef5;
-            font-size: 0.9em;
-        }
-
-        .user-bar a {
-            color: var(--tut-red);
-            text-decoration: none;
-            transition: var(--transition);
-            font-weight: 600;
-        }
-
-        .user-bar a:hover {
-            color: var(--tut-red-light);
-            text-decoration: underline;
-        }
-
-        .navbar {
-            background: var(--tut-blue);
-            color: white;
-            padding: 18px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 5px solid var(--tut-yellow);
-            box-shadow: var(--shadow-md);
-        }
-
-        .navbar-brand { font-size: 1.5em; font-weight: 700; }
-        .navbar-campus { font-size: 0.9em; opacity: 0.95; }
-
-        .navbar-menu {
-            display: flex;
-            gap: 20px;
-            list-style: none;
-        }
-
-        .navbar-menu a {
-            color: white;
-            text-decoration: none;
-            padding: 8px 14px;
-            border-radius: 6px;
-            transition: var(--transition);
-            font-weight: 500;
-        }
-
-        .navbar-menu a:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-1px);
-        }
-
-        .navbar-menu a.active {
-            background: var(--tut-yellow);
-            color: var(--tut-blue);
-            font-weight: 700;
-        }
-
-        .container { max-width: 1400px; margin: 30px auto; padding: 30px; }
-
-        .page-title {
-            color: var(--tut-blue);
-            margin-bottom: 35px;
-            border-bottom: 3px solid var(--tut-yellow);
-            padding-bottom: 18px;
-            font-size: 2em;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-        }
-
-        .alert {
-            padding: 16px 18px;
-            border-radius: 8px;
-            margin-bottom: 24px;
-            border-left: 5px solid;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 500;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .alert-success {
-            background: #d4edda;
-            color: #1e7e34;
-            border-left-color: #28a745;
-        }
-
-        .alert-error {
-            background: #f8d7da;
-            color: #b8181f;
-            border-left-color: var(--tut-red);
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 28px;
-        }
-
-        .form-section {
-            background: white;
-            padding: 28px;
-            border-radius: 10px;
-            box-shadow: var(--shadow-sm);
-            border-top: 4px solid var(--tut-blue);
-            border: 1px solid #e8eef5;
-        }
-
-        .form-title {
-            color: var(--tut-blue);
-            font-size: 1.35em;
-            margin-bottom: 24px;
-            font-weight: 600;
-            letter-spacing: -0.3px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 20px;
-        }
-
-        label {
-            color: var(--tut-blue);
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 0.9em;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        input, select {
-            padding: 12px 14px;
-            border: 2px solid #d5dce3;
-            border-radius: 6px;
-            font-size: 0.95em;
-            transition: var(--transition);
-            background: #fafbfc;
-            font-family: inherit;
-        }
-
-        input:focus, select:focus {
-            outline: none;
-            border-color: var(--tut-blue);
-            background: white;
-            box-shadow: 0 0 0 3px rgba(0, 84, 166, 0.1);
-        }
-
-        .button-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 24px;
-        }
-
-        .btn {
-            padding: 12px 26px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.85em;
-            transition: var(--transition);
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-        }
-
-        .btn-primary {
-            background: var(--tut-blue);
-            color: white;
-            flex: 1;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .btn-primary:hover {
-            background: var(--tut-blue-light);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .btn-reset {
-            background: #95a3b3;
-            color: white;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .btn-reset:hover {
-            background: #7a8391;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .summary-box {
-            background: linear-gradient(135deg, #ffffff 0%, #f5f7fa 100%);
-            padding: 24px;
-            border-radius: 10px;
-            box-shadow: var(--shadow-sm);
-            margin-bottom: 24px;
-            border: 1px solid #e8eef5;
-        }
-
-        .summary-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid #e8eef5;
-            align-items: center;
-        }
-
-        .summary-item:last-child {
-            border-bottom: none;
-            border-top: 2px solid var(--tut-yellow);
-            padding-top: 14px;
-            margin-top: 8px;
-            background: #fafbfc;
-            padding: 14px;
-            margin: 12px -24px -24px -24px;
-            border-radius: 0 0 10px 10px;
-        }
-
-        .summary-label {
-            color: var(--tut-blue);
-            font-weight: 600;
-            font-size: 0.9em;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        .summary-value {
-            color: #2c3e50;
-            font-size: 1em;
-            font-weight: 600;
-        }
-
-        .summary-item:last-child .summary-value {
-            color: var(--tut-blue);
-            font-size: 1.4em;
-        }
-
-        .table-section {
-            background: white;
-            padding: 28px;
-            border-radius: 10px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid #e8eef5;
-        }
-
-        .table-title {
-            color: var(--tut-blue);
-            font-size: 1.35em;
-            margin-bottom: 24px;
-            font-weight: 600;
-            letter-spacing: -0.3px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9em;
-        }
-
-        th {
-            background: var(--tut-blue);
-            color: white;
-            padding: 14px 12px;
-            text-align: left;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-            text-transform: uppercase;
-            font-size: 0.85em;
-        }
-
-        td {
-            padding: 13px 12px;
-            border-bottom: 1px solid #e8eef5;
-        }
-
-        tbody tr:nth-child(even) {
-            background: #f8f9fa;
-        }
-
-        tbody tr:hover {
-            background: #f0f4f8;
-            transition: background 0.2s ease;
-        }
-
-        .empty-message {
-            text-align: center;
-            padding: 48px 20px;
-            color: #95a3b3;
-            font-size: 0.95em;
-        }
-
-        .required {
-            color: var(--tut-red);
-            font-weight: 600;
-        }
-
-        .product-info {
-            font-size: 0.8em;
-            color: #7f8c8d;
-            margin-top: 6px;
-            font-weight: 500;
-        }
-
-        @media (max-width: 1024px) {
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-                margin: 16px auto;
-            }
-
-            .page-title {
-                font-size: 1.6em;
-            }
-
-            .form-section,
-            .table-section {
-                padding: 20px;
-            }
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales/POS | Ezasekasi Spaza Shop</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <div class="wrapper">
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                EZASEKASI
+                <small>Spaza Shop System</small>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="/"><span class="sidebar-icon">📊</span> Dashboard</a></li>
+                <li><a href="/products"><span class="sidebar-icon">📦</span> Products</a></li>
+                <li><a href="/sales" class="active"><span class="sidebar-icon">💳</span> Sales/POS</a></li>
+                <li><a href="/suppliers"><span class="sidebar-icon">🏢</span> Suppliers</a></li>
+                <li><a href="/credit-customers"><span class="sidebar-icon">👥</span> Credit Customers</a></li>
+                <li><a href="/reports"><span class="sidebar-icon">📈</span> Reports</a></li>
+                <li><a href="/logout"><span class="sidebar-icon">🚪</span> Logout</a></li>
+            </ul>
+        </aside>
 
-<div class="user-bar">
-    Logged in as: {{ user }} | <a href="/logout">Logout</a>
-</div>
-
-<div class="navbar">
-    <div>
-        <div class="navbar-brand">EZASEKASI SPAZA SHOP</div>
-        <div class="navbar-campus">Tshwane University of Technology | Emalahleni</div>
-    </div>
-    <ul class="navbar-menu">
-        <li><a href="/">Dashboard</a></li>
-        <li><a href="/products">Products/Inventory</a></li>
-        <li><a href="/sales" class="active">Sales/POS</a></li>
-        <li><a href="/suppliers">Suppliers</a></li>
-        <li><a href="/credit-customers">Credit Customers</a></li>
-        <li><a href="/reports">Reports</a></li>
-    </ul>
-</div>
-
-<div class="container">
-    <h1 class="page-title">💳 Sales / Point of Sale (POS)</h1>
-
-    {% if success %}
-    <div class="alert alert-success">
-        <strong>✓ Success:</strong> {{ success }}
-    </div>
-    {% endif %}
-
-    {% if error %}
-    <div class="alert alert-error">
-        <strong>✗ Error:</strong> {{ error }}
-    </div>
-    {% endif %}
-
-    <div class="grid-2">
-        <!-- SALES FORM SECTION -->
-        <div>
-            <div class="form-section">
-                <div class="form-title">➕ Record Sale</div>
-                <form method="POST" action="/sales/add">
-                    <div class="form-group">
-                        <label for="product_id">Select Product <span class="required">*</span></label>
-                        <select id="product_id" name="product_id" required onchange="updatePrice()">
-                            <option value="">-- Select Product --</option>
-                            {% for product in products %}
-                            <option value="{{ product.product_id }}" data-price="{{ product.selling_price }}" data-stock="{{ product.stock_quantity }}">
-                                {{ product.product_name }} (R{{ "%.2f"|format(product.selling_price) }})
-                            </option>
-                            {% endfor %}
-                        </select>
-                        <div class="product-info" id="product-info"></div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="quantity">Quantity <span class="required">*</span></label>
-                        <input type="number" id="quantity" name="quantity" min="1" required placeholder="0" onchange="calculateTotal()">
-                    </div>
-
-                    <div class="button-group">
-                        <button type="submit" class="btn btn-primary">💰 Process Sale</button>
-                        <button type="reset" class="btn btn-reset">Clear</button>
-                    </div>
-                </form>
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <!-- TOP BAR -->
+            <div class="top-bar">
+                <h1 style="margin: 0; font-size: 1.35rem;">Ezasekasi Management System</h1>
+                <div class="user-info">
+                    <span class="user-greeting">Welcome, {{ user }}! 👋</span>
+                    <a href="/logout" class="logout-btn">Logout</a>
+                </div>
             </div>
 
-            <!-- SALE SUMMARY -->
-            <div class="summary-box" id="summary-box" style="display:none;">
-                <div class="form-title" style="margin-bottom: 16px; font-size: 1.2em;">📋 Sale Summary</div>
-                <div class="summary-item">
-                    <span class="summary-label">Product:</span>
-                    <span class="summary-value" id="summary-product">-</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">Unit Price:</span>
-                    <span class="summary-value" id="summary-price">-</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">Quantity:</span>
-                    <span class="summary-value" id="summary-quantity">-</span>
-                </div>
-                <div class="summary-item">
-                    <span class="summary-label">Total Amount:</span>
-                    <span class="summary-value" id="summary-total">-</span>
-                </div>
-            </div>
-        </div>
+            <!-- CONTENT AREA -->
+            <div class="content">
+                <div class="container">
+                    <!-- PAGE HEADER -->
+                    <div class="page-header">
+                        <h1 class="page-title">💳 Point of Sale (POS)</h1>
+                        <p class="page-subtitle">Record sales transactions quickly and efficiently</p>
+                    </div>
 
-        <!-- RECENT SALES -->
-        <div>
-            <div class="table-section">
-                <div class="table-title">📊 Recent Sales</div>
-                {% if sales %}
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Cashier</th>
-                            <th>Qty</th>
-                            <th>Amount</th>
-                            <th>Time</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for sale in sales %}
-                        <tr>
-                            <td><strong>{{ sale.product_name }}</strong></td>
-                            <td>{{ sale.full_name }}</td>
-                            <td>{{ sale.quantity_sold }}</td>
-                            <td>R{{ "%.2f"|format(sale.total_amount) }}</td>
-                            <td>{{ sale.sale_timestamp.strftime('%H:%M:%S') if sale.sale_timestamp else 'N/A' }}</td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                {% else %}
-                <div class="empty-message">
-                    <p>No sales recorded yet.</p>
+                    <!-- ALERTS -->
+                    {% if error %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                    {% endif %}
+                    {% if success %}
+                    <div class="alert alert-success">{{ success }}</div>
+                    {% endif %}
+
+                    <!-- POS FORM -->
+                    <div class="card" style="margin-bottom: 40px;">
+                        <div class="card-header">
+                            <h3 class="card-title">🛒 Record Sale</h3>
+                        </div>
+                        <div class="card-body">
+                            <form action="/sales/add" method="POST" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; align-items: end;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label>Select Product *</label>
+                                    <select name="product_id" required>
+                                        <option value="">-- Choose Product --</option>
+                                        {% for product in products %}
+                                        <option value="{{ product.product_id }}">{{ product.product_name }} - R{{ "%.2f"|format(product.selling_price) }} (Stock: {{ product.stock_quantity }})</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label>Quantity *</label>
+                                    <input type="number" name="quantity" min="1" placeholder="1" required>
+                                </div>
+                                <button type="submit" class="btn btn-success">💾 Record Sale</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- RECENT SALES -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">📋 Recent Sales History</h3>
+                            <span style="color: #7f8c8d;">{{ sales|length }} transactions</span>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Sale ID</th>
+                                        <th>Product</th>
+                                        <th>Cashier</th>
+                                        <th>Quantity</th>
+                                        <th>Total Amount</th>
+                                        <th>Date & Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for sale in sales %}
+                                    <tr>
+                                        <td><strong>#{{ sale.sale_id }}</strong></td>
+                                        <td>{{ sale.product_name or 'N/A' }}</td>
+                                        <td>{{ sale.full_name or 'Unknown' }}</td>
+                                        <td>{{ sale.quantity_sold }}</td>
+                                        <td><strong>R{{ "%.2f"|format(sale.total_amount or 0) }}</strong></td>
+                                        <td>{{ sale.sale_timestamp.strftime('%d %b %Y %H:%M') if sale.sale_timestamp else 'N/A' }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                 </div>
-                {% endif %}
             </div>
         </div>
     </div>
-</div>
-
-<script>
-function updatePrice() {
-    const select = document.getElementById('product_id');
-    const selected = select.options[select.selectedIndex];
-    const price = selected.getAttribute('data-price');
-    const stock = selected.getAttribute('data-stock');
-    const productInfo = document.getElementById('product-info');
-
-    if (price && stock) {
-        productInfo.innerHTML = `<strong>Available:</strong> ${stock} units | <strong>Price:</strong> R${parseFloat(price).toFixed(2)}`;
-    } else {
-        productInfo.innerHTML = '';
-    }
-
-    calculateTotal();
-}
-
-function calculateTotal() {
-    const select = document.getElementById('product_id');
-    const selected = select.options[select.selectedIndex];
-    const price = parseFloat(selected.getAttribute('data-price') || 0);
-    const productName = selected.text || '-';
-    const quantity = parseInt(document.getElementById('quantity').value || 0);
-
-    const summaryBox = document.getElementById('summary-box');
-
-    if (quantity > 0 && price > 0) {
-        const total = quantity * price;
-        document.getElementById('summary-product').textContent = productName.split(' (')[0];
-        document.getElementById('summary-price').textContent = 'R' + price.toFixed(2);
-        document.getElementById('summary-quantity').textContent = quantity;
-        document.getElementById('summary-total').textContent = 'R' + total.toFixed(2);
-        summaryBox.style.display = 'block';
-    } else {
-        summaryBox.style.display = 'none';
-    }
-}
-</script>
-
 </body>
 </html>

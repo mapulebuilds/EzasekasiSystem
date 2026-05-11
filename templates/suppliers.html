@@ -2,467 +2,204 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Suppliers / Stock | Ezasekasi Spaza System</title>
-    <style>
-        :root {
-            --tut-blue: #0054a6;
-            --tut-blue-light: #1e6ab8;
-            --tut-yellow: #ffcc00;
-            --tut-red: #ed1c24;
-            --tut-red-light: #f54747;
-            --shadow-sm: 0 2px 4px rgba(0,0,0,0.08);
-            --shadow-md: 0 4px 12px rgba(0,0,0,0.1);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; background: #f8f9fa; color: #2c3e50; }
-
-        .user-bar {
-            text-align: right;
-            background: #fff;
-            color: var(--tut-blue);
-            font-weight: 600;
-            padding: 12px 30px;
-            border-bottom: 1px solid #e8eef5;
-            font-size: 0.9em;
-        }
-
-        .user-bar a {
-            color: var(--tut-red);
-            text-decoration: none;
-            transition: var(--transition);
-            font-weight: 600;
-        }
-
-        .user-bar a:hover {
-            color: var(--tut-red-light);
-            text-decoration: underline;
-        }
-
-        .navbar {
-            background: var(--tut-blue);
-            color: white;
-            padding: 18px 30px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 5px solid var(--tut-yellow);
-            box-shadow: var(--shadow-md);
-        }
-
-        .navbar-brand { font-size: 1.5em; font-weight: 700; }
-        .navbar-campus { font-size: 0.9em; opacity: 0.95; }
-
-        .navbar-menu {
-            display: flex;
-            gap: 20px;
-            list-style: none;
-        }
-
-        .navbar-menu a {
-            color: white;
-            text-decoration: none;
-            padding: 8px 14px;
-            border-radius: 6px;
-            transition: var(--transition);
-            font-weight: 500;
-        }
-
-        .navbar-menu a:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-1px);
-        }
-
-        .navbar-menu a.active {
-            background: var(--tut-yellow);
-            color: var(--tut-blue);
-            font-weight: 700;
-        }
-
-        .container { max-width: 1400px; margin: 30px auto; padding: 30px; }
-
-        .page-title {
-            color: var(--tut-blue);
-            margin-bottom: 35px;
-            border-bottom: 3px solid var(--tut-yellow);
-            padding-bottom: 18px;
-            font-size: 2em;
-            font-weight: 600;
-            letter-spacing: -0.5px;
-        }
-
-        .alert {
-            padding: 16px 18px;
-            border-radius: 8px;
-            margin-bottom: 24px;
-            border-left: 5px solid;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            font-weight: 500;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .alert-success {
-            background: #d4edda;
-            color: #1e7e34;
-            border-left-color: #28a745;
-        }
-
-        .alert-error {
-            background: #f8d7da;
-            color: #b8181f;
-            border-left-color: var(--tut-red);
-        }
-
-        .grid-2 {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 28px;
-            margin-bottom: 28px;
-        }
-
-        .form-section {
-            background: white;
-            padding: 28px;
-            border-radius: 10px;
-            box-shadow: var(--shadow-sm);
-            border-top: 4px solid var(--tut-blue);
-            border: 1px solid #e8eef5;
-        }
-
-        .form-title {
-            color: var(--tut-blue);
-            font-size: 1.35em;
-            margin-bottom: 24px;
-            font-weight: 600;
-            letter-spacing: -0.3px;
-        }
-
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            margin-bottom: 18px;
-        }
-
-        label {
-            color: var(--tut-blue);
-            font-weight: 600;
-            margin-bottom: 8px;
-            font-size: 0.9em;
-            text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
-
-        input, select, textarea {
-            padding: 12px 14px;
-            border: 2px solid #d5dce3;
-            border-radius: 6px;
-            font-size: 0.95em;
-            transition: var(--transition);
-            background: #fafbfc;
-            font-family: inherit;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: var(--tut-blue);
-            background: white;
-            box-shadow: 0 0 0 3px rgba(0, 84, 166, 0.1);
-        }
-
-        .btn {
-            padding: 12px 26px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            font-size: 0.85em;
-            transition: var(--transition);
-            text-transform: uppercase;
-            letter-spacing: 0.4px;
-        }
-
-        .btn-primary {
-            background: var(--tut-blue);
-            color: white;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .btn-primary:hover {
-            background: var(--tut-blue-light);
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .btn-secondary {
-            background: #95a3b3;
-            color: white;
-            box-shadow: var(--shadow-sm);
-        }
-
-        .btn-secondary:hover {
-            background: #7a8391;
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .btn-danger {
-            background: var(--tut-red);
-            color: white;
-            box-shadow: var(--shadow-sm);
-            padding: 8px 16px;
-            font-size: 0.8em;
-        }
-
-        .btn-danger:hover {
-            background: var(--tut-red-light);
-            transform: translateY(-1px);
-            box-shadow: var(--shadow-md);
-        }
-
-        .button-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 22px;
-        }
-
-        .button-group .btn-primary {
-            flex: 1;
-        }
-
-        .table-section {
-            background: white;
-            padding: 28px;
-            border-radius: 10px;
-            box-shadow: var(--shadow-sm);
-            border: 1px solid #e8eef5;
-        }
-
-        .table-title {
-            color: var(--tut-blue);
-            font-size: 1.35em;
-            margin-bottom: 24px;
-            font-weight: 600;
-            letter-spacing: -0.3px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.9em;
-        }
-
-        th {
-            background: var(--tut-blue);
-            color: white;
-            padding: 14px 12px;
-            text-align: left;
-            font-weight: 600;
-            letter-spacing: 0.3px;
-            text-transform: uppercase;
-            font-size: 0.85em;
-        }
-
-        td {
-            padding: 13px 12px;
-            border-bottom: 1px solid #e8eef5;
-        }
-
-        tbody tr:nth-child(even) {
-            background: #f8f9fa;
-        }
-
-        tbody tr:hover {
-            background: #f0f4f8;
-            transition: background 0.2s ease;
-        }
-
-        .empty-message {
-            text-align: center;
-            padding: 48px 20px;
-            color: #95a3b3;
-            font-size: 0.95em;
-        }
-
-        .required {
-            color: var(--tut-red);
-            font-weight: 600;
-        }
-
-        @media (max-width: 1024px) {
-            .grid-2 {
-                grid-template-columns: 1fr;
-            }
-
-            .button-group {
-                flex-direction: column;
-            }
-
-            .button-group .btn {
-                flex: 1;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px;
-                margin: 16px auto;
-            }
-
-            .page-title {
-                font-size: 1.6em;
-            }
-
-            .form-section,
-            .table-section {
-                padding: 20px;
-            }
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Suppliers | Ezasekasi Spaza Shop</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+    <div class="wrapper">
+        <!-- SIDEBAR NAVIGATION -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                EZASEKASI
+                <small>Spaza Shop System</small>
+            </div>
+            <ul class="sidebar-menu">
+                <li><a href="/"><span class="sidebar-icon">📊</span> Dashboard</a></li>
+                <li><a href="/products"><span class="sidebar-icon">📦</span> Products</a></li>
+                <li><a href="/sales"><span class="sidebar-icon">💳</span> Sales/POS</a></li>
+                <li><a href="/suppliers" class="active"><span class="sidebar-icon">🏢</span> Suppliers</a></li>
+                <li><a href="/credit-customers"><span class="sidebar-icon">👥</span> Credit Customers</a></li>
+                <li><a href="/reports"><span class="sidebar-icon">📈</span> Reports</a></li>
+                <li><a href="/logout"><span class="sidebar-icon">🚪</span> Logout</a></li>
+            </ul>
+        </aside>
 
-<div class="user-bar">
-    Logged in as: {{ user }} | <a href="/logout">Logout</a>
-</div>
+        <!-- MAIN CONTENT -->
+        <div class="main-content">
+            <!-- TOP BAR -->
+            <div class="top-bar">
+                <h1 style="margin: 0; font-size: 1.35rem;">Ezasekasi Management System</h1>
+                <div class="user-info">
+                    <span class="user-greeting">Welcome, {{ user }}! 👋</span>
+                    <a href="/logout" class="logout-btn">Logout</a>
+                </div>
+            </div>
 
-<div class="navbar">
-    <div>
-        <div class="navbar-brand">EZASEKASI SPAZA SHOP</div>
-        <div class="navbar-campus">Tshwane University of Technology | Emalahleni</div>
-    </div>
-    <ul class="navbar-menu">
-        <li><a href="/">Dashboard</a></li>
-        <li><a href="/products">Products/Inventory</a></li>
-        <li><a href="/sales">Sales/POS</a></li>
-        <li><a href="/suppliers" class="active">Suppliers</a></li>
-        <li><a href="/credit-customers">Credit Customers</a></li>
-        <li><a href="/reports">Reports</a></li>
-    </ul>
-</div>
+            <!-- CONTENT AREA -->
+            <div class="content">
+                <div class="container">
+                    <!-- PAGE HEADER -->
+                    <div class="page-header">
+                        <h1 class="page-title">🏢 Supplier Management</h1>
+                        <p class="page-subtitle">Manage suppliers and receive stock</p>
+                    </div>
 
-<div class="container">
-    <h1 class="page-title">🏭 Suppliers & Stock Receipts</h1>
+                    <!-- ALERTS -->
+                    {% if error %}
+                    <div class="alert alert-danger">{{ error }}</div>
+                    {% endif %}
+                    {% if success %}
+                    <div class="alert alert-success">{{ success }}</div>
+                    {% endif %}
 
-    {% if success %}
-    <div class="alert alert-success">
-        <strong>✓ Success:</strong> {{ success }}
-    </div>
-    {% endif %}
+                    <!-- ADD SUPPLIER FORM -->
+                    <div class="card" style="margin-bottom: 40px;">
+                        <div class="card-header">
+                            <h3 class="card-title">➕ Add New Supplier</h3>
+                        </div>
+                        <div class="card-body">
+                            <form action="/suppliers/add" method="POST" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+                                <div class="form-group">
+                                    <label>Company Name *</label>
+                                    <input type="text" name="company_name" placeholder="e.g., Dairy Fresh Ltd" required>
+                                </div>
+                                <div class="form-group">
+                                    <label>Contact Person</label>
+                                    <input type="text" name="contact_person" placeholder="e.g., Mr. Smith">
+                                </div>
+                                <div class="form-group">
+                                    <label>Phone</label>
+                                    <input type="tel" name="phone" placeholder="0xx xxx xxxx">
+                                </div>
+                                <div class="form-group">
+                                    <label>Email</label>
+                                    <input type="email" name="email" placeholder="contact@company.com">
+                                </div>
+                                <button type="submit" class="btn btn-success" style="grid-column: 1 / -1;">Add Supplier</button>
+                            </form>
+                        </div>
+                    </div>
 
-    {% if error %}
-    <div class="alert alert-error">
-        <strong>✗ Error:</strong> {{ error }}
-    </div>
-    {% endif %}
+                    <!-- RECEIVE STOCK FORM -->
+                    <div class="card" style="margin-bottom: 40px;">
+                        <div class="card-header">
+                            <h3 class="card-title">📥 Receive Stock</h3>
+                        </div>
+                        <div class="card-body">
+                            <form action="/suppliers/receive" method="POST" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px; align-items: end;">
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label>Supplier *</label>
+                                    <select name="supplier_id" required>
+                                        <option value="">-- Select Supplier --</option>
+                                        {% for supplier in suppliers %}
+                                        <option value="{{ supplier.supplier_id }}">{{ supplier.supplier_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label>Product *</label>
+                                    <select name="product_id" required>
+                                        <option value="">-- Select Product --</option>
+                                        {% for product in products %}
+                                        <option value="{{ product.product_id }}">{{ product.product_name }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="form-group" style="margin-bottom: 0;">
+                                    <label>Quantity *</label>
+                                    <input type="number" name="quantity" min="1" placeholder="1" required>
+                                </div>
+                                <button type="submit" class="btn btn-success">📦 Receive Stock</button>
+                            </form>
+                        </div>
+                    </div>
 
-    <div class="grid-2">
-        <!-- ADD SUPPLIER FORM -->
-        <div>
-            <div class="form-section">
-                <div class="form-title">➕ Add Supplier</div>
-                <form method="POST" action="/suppliers/add">
-                    <div class="form-group">
-                        <label for="supplier_name">Supplier Name <span class="required">*</span></label>
-                        <input type="text" id="supplier_name" name="supplier_name" required placeholder="Enter supplier name">
+                    <!-- SUPPLIERS LIST -->
+                    <div class="card" style="margin-bottom: 40px;">
+                        <div class="card-header">
+                            <h3 class="card-title">📋 Suppliers</h3>
+                            <span style="color: #7f8c8d;">{{ suppliers|length }} suppliers</span>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Company Name</th>
+                                        <th>Contact Person</th>
+                                        <th>Phone</th>
+                                        <th>Email</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for supplier in suppliers %}
+                                    <tr>
+                                        <td><strong>{{ supplier.supplier_name }}</strong></td>
+                                        <td>{{ supplier.contact_person or '-' }}</td>
+                                        <td>{{ supplier.phone or '-' }}</td>
+                                        <td>{{ supplier.email or '-' }}</td>
+                                        <td>
+                                            <button onclick="editSupplier({{ supplier.supplier_id }})" class="btn btn-primary btn-sm">Edit</button>
+                                            <button onclick="deleteSupplier({{ supplier.supplier_id }})" class="btn btn-danger btn-sm">Delete</button>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="contact_person">Contact Person</label>
-                        <input type="text" id="contact_person" name="contact_person" placeholder="Contact name">
+
+                    <!-- RECENT RECEIPTS -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">📥 Recent Stock Receipts</h3>
+                        </div>
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Receipt ID</th>
+                                        <th>Supplier</th>
+                                        <th>Product</th>
+                                        <th>Quantity</th>
+                                        <th>Received By</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for receipt in receipts %}
+                                    <tr>
+                                        <td>#{{ receipt.receipt_id }}</td>
+                                        <td>{{ receipt.supplier_name or 'N/A' }}</td>
+                                        <td>{{ receipt.product_name or 'N/A' }}</td>
+                                        <td>{{ receipt.quantity_received }}</td>
+                                        <td>{{ receipt.full_name or 'Unknown' }}</td>
+                                        <td>{{ receipt.received_date.strftime('%d %b %Y') if receipt.received_date else 'N/A' }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label for="phone">Phone Number</label>
-                        <input type="text" id="phone" name="phone" placeholder="Contact number">
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" name="email" placeholder="supplier@example.com">
-                    </div>
-                    <div class="form-group">
-                        <label for="address">Address</label>
-                        <textarea id="address" name="address" rows="3" placeholder="Physical address" style="resize: vertical;"></textarea>
-                    </div>
-                    <div class="button-group">
-                        <button type="submit" class="btn btn-primary">Add Supplier</button>
-                    </div>
-                </form>
+                </div>
             </div>
         </div>
-
-        <!-- SUPPLIERS LIST -->
-        <div>
-            <div class="table-section">
-                <div class="table-title">📋 Current Suppliers</div>
-                {% if suppliers %}
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Supplier Name</th>
-                            <th>Contact</th>
-                            <th>Phone</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for supplier in suppliers %}
-                        <tr>
-                            <td><strong>{{ supplier.supplier_name }}</strong></td>
-                            <td>{{ supplier.contact_person or '-' }}</td>
-                            <td>{{ supplier.phone or '-' }}</td>
-                            <td>
-                                <a href="/suppliers/delete/{{ supplier.supplier_id }}" onclick="return confirm('Delete this supplier?')" class="btn btn-danger" style="text-decoration:none; display:inline-block;">Delete</a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-                {% else %}
-                <div class="empty-message">No suppliers added yet.</div>
-                {% endif %}
-            </div>
-        </div>
     </div>
 
-    <!-- STOCK RECEIPT SECTION -->
-    <div class="form-section">
-        <div class="form-title">📦 Record Stock Receipt</div>
-        <form method="POST" action="/suppliers/stock-receipt">
-            <div class="grid-2">
-                <div class="form-group">
-                    <label for="supplier_id">Supplier <span class="required">*</span></label>
-                    <select id="supplier_id" name="supplier_id" required>
-                        <option value="">-- Select Supplier --</option>
-                        {% for supplier in suppliers %}
-                        <option value="{{ supplier.supplier_id }}">{{ supplier.supplier_name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="product_id">Product <span class="required">*</span></label>
-                    <select id="product_id" name="product_id" required>
-                        <option value="">-- Select Product --</option>
-                        {% for product in products %}
-                        <option value="{{ product.product_id }}">{{ product.product_name }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="quantity">Quantity <span class="required">*</span></label>
-                    <input type="number" id="quantity" name="quantity" min="1" required placeholder="0">
-                </div>
-                <div class="form-group">
-                    <label for="cost_price">Cost Price (per unit) <span class="required">*</span></label>
-                    <input type="number" id="cost_price" name="cost_price" step="0.01" min="0" required placeholder="0.00">
-                </div>
-            </div>
-            <div class="button-group">
-                <button type="submit" class="btn btn-primary">Record Receipt</button>
-            </div>
-        </form>
-    </div>
-</div>
-
+    <script>
+        function editSupplier(id) {
+            alert('Edit supplier ' + id);
+        }
+        function deleteSupplier(id) {
+            if(confirm('Delete this supplier?')) {
+                const form = document.createElement('form');
+                form.method = 'POST';
+                form.action = '/suppliers/delete/' + id;
+                document.body.appendChild(form);
+                form.submit();
+            }
+        }
+    </script>
 </body>
 </html>
