@@ -4,6 +4,8 @@ from datetime import datetime, date
 from decimal import Decimal
 import csv
 import io
+import os
+from urllib.parse import urlparse
 from reportlab.lib.pagesizes import letter, A4
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
@@ -11,18 +13,29 @@ from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, 
 from reportlab.lib.units import inch
 
 app = Flask(__name__)
-app.secret_key = 'tut_secret_key_2026'
+app.secret_key = os.environ.get('SECRET_KEY', 'tut_secret_key_2026')
 
 # --- 1. DATABASE CONNECTION ---
 def get_db_connection():
     try:
-        return mysql.connector.connect(
-            host="127.0.0.1",
-            port=3306,
-            user="root",
-            password="Njabu@08",
-            database="ezasekasi_db"
-        )
+        db_url = os.environ.get('DATABASE_URL')
+        if db_url:
+            parsed = urlparse(db_url)
+            return mysql.connector.connect(
+                host=parsed.hostname,
+                port=parsed.port or 3306,
+                user=parsed.username,
+                password=parsed.password,
+                database=parsed.path.lstrip('/')
+            )
+        else:
+            return mysql.connector.connect(
+                host="127.0.0.1",
+                port=3306,
+                user="root",
+                password="Njabu@08",
+                database="ezasekasi_db"
+            )
     except mysql.connector.Error as err:
         print(f"DATABASE ERROR: {err}")
         return None
@@ -1862,4 +1875,6 @@ def sell_item(id):
     return redirect(url_for('index'))
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    debug = os.environ.get("FLASK_DEBUG", "1") == "1"
+    app.run(host="0.0.0.0", port=port, debug=debug)
