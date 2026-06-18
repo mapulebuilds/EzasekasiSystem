@@ -6,6 +6,7 @@ from decimal import Decimal
 import csv
 import io
 import os
+import time
 from urllib.parse import urlparse
 from reportlab.lib.pagesizes import letter, A4
 from reportlab.lib import colors
@@ -507,19 +508,30 @@ def login():
         username = request.form['username']
         password = request.form['password']
 
-        conn = get_db_connection()
-        cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-        cursor.execute("SELECT * FROM users WHERE username = %s AND password_hash = %s", (username, password))
-        user = cursor.fetchone()
-        conn.close()
+        try:
+            conn = get_db_connection()
+            if conn is None:
+                return render_template('login.html', error="Database connection failed. Please try again.")
 
-        if user:
-            session['logged_in'] = True
-            session['username'] = user['full_name']
-            session['user_id'] = user['user_id']
-            return redirect(url_for('index'))
-        else:
-            return render_template('login.html', error="User not registered or incorrect credentials.")
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+            cursor.execute("SELECT * FROM users WHERE username = %s AND password_hash = %s", (username, password))
+            user = cursor.fetchone()
+            conn.close()
+
+            if user:
+                session['logged_in'] = True
+                session['username'] = user['full_name']
+                session['user_id'] = user['user_id']
+                return redirect(url_for('index'))
+            else:
+                return render_template('login.html', error="User not registered or incorrect credentials.")
+        except Exception as err:
+            print(f"LOGIN ERROR: {err}")
+            # If users table is missing, attempt to seed the database
+            if "does not exist" in str(err):
+                print("LOGIN: Users table missing, re-seeding database")
+                seed_database()
+            return render_template('login.html', error="A system error occurred. Please try again.")
     return render_template('login.html')
 
 # --- 3. MAIN DASHBOARD ---
@@ -1875,8 +1887,17 @@ def sell_item(id):
     return redirect(url_for('index'))
 
 def seed_database():
-    conn = get_db_connection()
+    # Retry up to 30 seconds if database isn't ready yet
+    conn = None
+    for attempt in range(6):
+        conn = get_db_connection()
+        if conn is not None:
+            break
+        if attempt < 5:
+            print(f"SEED: DB not ready, retrying in 5s (attempt {attempt+1}/6)")
+            time.sleep(5)
     if conn is None:
+        print("SEED: Could not connect to database after 6 attempts")
         return
     try:
         cursor = conn.cursor()
