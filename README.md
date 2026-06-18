@@ -1,5 +1,7 @@
 # Ezasekasi Spaza Shop Management System
 
+**Live:** [ezasekasisystem.onrender.com](https://ezasekasisystem.onrender.com)
+
 A comprehensive web-based management system for spaza shops, built with Flask and PostgreSQL. Designed to streamline inventory management, sales operations, supplier coordination, and credit customer tracking.
 
 ## Project Overview
