@@ -1,6 +1,6 @@
 # Ezasekasi Spaza Shop Management System
 
-A comprehensive web-based management system for spaza shops, built with Flask and MySQL. Designed to streamline inventory management, sales operations, supplier coordination, and credit customer tracking.
+A comprehensive web-based management system for spaza shops, built with Flask and PostgreSQL. Designed to streamline inventory management, sales operations, supplier coordination, and credit customer tracking.
 
 ## Project Overview
 
@@ -19,24 +19,22 @@ A comprehensive web-based management system for spaza shops, built with Flask an
 ## Tech Stack
 
 - **Backend:** Flask (Python)
-- **Database:** MySQL
+- **Database:** PostgreSQL
 - **Frontend:** HTML5, CSS3, Jinja2 Templates
 - **Reporting:** ReportLab (PDF generation)
-- **Libraries:** mysql-connector-python, reportlab
+- **Libraries:** psycopg2-binary, reportlab
 
 ## Project Structure
 
 ```
 EzasekasiSystem/
 ├── app.py                 # Main Flask application
-├── templates/
-│   ├── dashboard.html     # Dashboard page
-│   ├── login.html         # Login page
-│   ├── products.html      # Product inventory
-│   ├── sales.html         # Point of sale
-│   ├── suppliers.html     # Supplier management
-│   ├── credit_customers.html  # Credit customer management
-│   └── reports.html       # Reporting page
+├── templates/             # Jinja2 HTML templates
+├── static/                # Static assets (CSS, images)
+├── render.yaml            # Render.com deployment config
+├── runtime.txt            # Python version for deployment
+├── database_postgresql.sql  # PostgreSQL schema + seed data
+├── requirements.txt       # Python dependencies
 ├── README.md              # This file
 └── .venv/                 # Python virtual environment
 ```
@@ -44,8 +42,8 @@ EzasekasiSystem/
 ## Installation & Setup
 
 ### Prerequisites
-- Python 3.x
-- MySQL Server
+- Python 3.13+
+- PostgreSQL 16+
 - Git
 
 ### Step 1: Clone the Repository
@@ -64,21 +62,15 @@ source .venv/bin/activate  # On macOS/Linux
 
 ### Step 3: Install Dependencies
 ```bash
-pip install flask mysql-connector-python reportlab
+pip install -r requirements.txt
 ```
 
 ### Step 4: Configure Database
-1. Create a MySQL database named `ezasekasi_db`
-2. Update database credentials in `app.py`:
-```python
-def get_db_connection():
-    return mysql.connector.connect(
-        host="127.0.0.1",
-        port=3306,
-        user="root",
-        password="YOUR_PASSWORD",
-        database="ezasekasi_db"
-    )
+1. Create a PostgreSQL database named `ezasekasi_db`
+2. Run the schema file: `psql -U postgres -d ezasekasi_db -f database_postgresql.sql`
+3. Or set the `DATABASE_URL` environment variable:
+```bash
+export DATABASE_URL="postgresql://user:password@host:5432/ezasekasi_db"
 ```
 
 ### Step 5: Run the Application
@@ -89,9 +81,10 @@ The application will be available at `http://localhost:5000`
 
 ## Default Login Credentials
 
-After database setup, use the following credentials to access the system:
-- **Username:** [Your registered username]
-- **Password:** [Your registered password]
+After database setup, use any of the following credentials:
+- **Username:** `mercy_m`, **Password:** `123456` (Owner)
+- **Username:** `happy_s`, **Password:** `123456` (Admin)
+- **Username:** `bri_m`, **Password:** `123456` (Cashier)
 
 ## Features in Detail
 
@@ -161,6 +154,30 @@ The system uses the following main tables:
 - Password-protected admin operations
 - Database error handling and validation
 
+## Deployment
+
+This project is configured for one-click deployment on [Render](https://render.com).
+
+[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+
+### Deploy on Render:
+1. Fork/clone this repository to your GitHub
+2. Go to [Render Dashboard](https://dashboard.render.com) → New → Blueprint
+3. Connect your repository
+4. Render will auto-detect `render.yaml` and set up:
+   - A **Web Service** running gunicorn
+   - A **PostgreSQL database** (free tier)
+   - Environment variables (`DATABASE_URL`, `SECRET_KEY`)
+5. The database schema and seed data are applied automatically on first start
+
+### Manual Deployment (other platforms):
+1. Set environment variables:
+   - `DATABASE_URL` - PostgreSQL connection string
+   - `SECRET_KEY` - Random secret for session signing
+   - `FLASK_DEBUG` - Set to `0` for production
+2. Install dependencies: `pip install -r requirements.txt`
+3. Run with gunicorn: `gunicorn app:app`
+
 ## Future Enhancements
 
 - Mobile application support
@@ -172,20 +189,22 @@ The system uses the following main tables:
 ## Troubleshooting
 
 ### Database Connection Error
-- Ensure MySQL Server is running
-- Verify database credentials in `app.py`
+- Ensure PostgreSQL Server is running
+- Verify `DATABASE_URL` environment variable or credentials in `app.py`
 - Check database name is `ezasekasi_db`
+- Run the schema from `database_postgresql.sql`
 
 ### Module Import Errors
 - Ensure virtual environment is activated
-- Run `pip install -r requirements.txt` (if available)
-- Manually install: `pip install flask mysql-connector-python reportlab`
+- Run `pip install -r requirements.txt`
+- Manually install: `pip install -r requirements.txt`
 
 ### Port Already in Use
-- Flask defaults to port 5000. If in use, modify in `app.py`:
-```python
-if __name__ == '__main__':
-    app.run(debug=True, port=5001)  # Change port number
+- Flask defaults to port 5000. Set `PORT` env var or modify `app.py`:
+```bash
+$env:PORT=5001  # PowerShell
+# or
+export PORT=5001  # Linux/macOS
 ```
 
 ## License

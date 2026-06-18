@@ -2024,9 +2024,11 @@ def seed_database():
     finally:
         conn.close()
 
+# Run database setup at module level so gunicorn workers also initialize
+seed_database()
+initialize_ai_tables()
+
 if __name__ == "__main__":
-    seed_database()
-    initialize_ai_tables()
     port = int(os.environ.get("PORT", 5000))
     debug = os.environ.get("FLASK_DEBUG", "1") == "1"
     app.run(host="0.0.0.0", port=port, debug=debug)
