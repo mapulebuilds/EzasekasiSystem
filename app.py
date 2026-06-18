@@ -2045,6 +2045,25 @@ def seed_database():
     finally:
         conn.close()
 
+# --- DEBUG: Check database status ---
+@app.route('/debug-db')
+def debug_db():
+    import traceback
+    result = []
+    try:
+        conn = get_db_connection()
+        if conn is None:
+            return "<h2>DB: Connection failed</h2><pre>DATABASE_URL set: " + str(os.environ.get('DATABASE_URL') is not None) + "</pre>"
+        cursor = conn.cursor()
+        cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_schema='public' ORDER BY table_name")
+        tables = [row[0] for row in cursor.fetchall()]
+        cursor.execute("SELECT count(*) FROM users")
+        users_count = cursor.fetchone()[0]
+        conn.close()
+        return f"<h2>DB OK</h2><p>Tables: {tables}</p><p>Users: {users_count}</p>"
+    except Exception as e:
+        return f"<h2>DB Error</h2><pre>{traceback.format_exc()}</pre>"
+
 # Run database setup at module level so gunicorn workers also initialize
 seed_database()
 initialize_ai_tables()
