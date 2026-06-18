@@ -31,8 +31,9 @@ EzasekasiSystem/
 ├── app.py                 # Main Flask application
 ├── templates/             # Jinja2 HTML templates
 ├── static/                # Static assets (CSS, images)
-├── render.yaml            # Render.com deployment config
+├── render.yaml            # Render deployment config
 ├── runtime.txt            # Python version for deployment
+├── .env.example           # Environment variable template (copy to .env)
 ├── database_postgresql.sql  # PostgreSQL schema + seed data
 ├── requirements.txt       # Python dependencies
 ├── README.md              # This file
@@ -154,29 +155,41 @@ The system uses the following main tables:
 - Password-protected admin operations
 - Database error handling and validation
 
-## Deployment
+## Deployment with Render + Neon
 
-This project is configured for one-click deployment on [Render](https://render.com).
+This project uses **Render** for hosting the Flask web app and **Neon** for the PostgreSQL database.
 
-[![Deploy to Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy)
+### Step 1: Create a Neon Database
+1. Go to [Neon](https://neon.tech) and sign up/log in
+2. Create a new project
+3. Copy the **connection string** from the dashboard (looks like: `postgresql://user:password@ep-xxx.neon.tech/database?sslmode=require`)
 
-### Deploy on Render:
-1. Fork/clone this repository to your GitHub
-2. Go to [Render Dashboard](https://dashboard.render.com) → New → Blueprint
-3. Connect your repository
-4. Render will auto-detect `render.yaml` and set up:
-   - A **Web Service** running gunicorn
-   - A **PostgreSQL database** (free tier)
-   - Environment variables (`DATABASE_URL`, `SECRET_KEY`)
-5. The database schema and seed data are applied automatically on first start
+### Step 2: Deploy the Web Service on Render
+1. Go to [Render Dashboard](https://dashboard.render.com) → **New** → **Blueprint**
+2. Connect your GitHub repository and select it
+3. Render will auto-detect `render.yaml` and create the web service
 
-### Manual Deployment (other platforms):
-1. Set environment variables:
-   - `DATABASE_URL` - PostgreSQL connection string
-   - `SECRET_KEY` - Random secret for session signing
-   - `FLASK_DEBUG` - Set to `0` for production
-2. Install dependencies: `pip install -r requirements.txt`
-3. Run with gunicorn: `gunicorn app:app`
+### Step 3: Add Environment Variables on Render
+After the Blueprint deploy completes, go to your web service → **Environment** and add:
+
+| Key | Value |
+|---|---|
+| `DATABASE_URL` | Paste your Neon connection string here |
+| `SECRET_KEY` | A long random string (Render can generate one for you) |
+
+Then click **Manual Deploy** → **Deploy latest commit** to restart with the env vars.
+
+> **Never paste secrets (DATABASE_URL, SECRET_KEY) into your GitHub repository.**
+
+### How it works
+- The app reads `DATABASE_URL` from environment variables (Render or `.env` for local dev)
+- On startup, `seed_database()` creates all required tables if they don't exist and inserts sample data
+- The login page uses the first user credentials: `mercy_m` / `123456`
+
+### Local Development
+1. Copy `.env.example` to `.env` and add your local or Neon connection string
+2. Run: `pip install -r requirements.txt && python app.py`
+3. The app will be at `http://localhost:5000`
 
 ## Future Enhancements
 
@@ -189,10 +202,10 @@ This project is configured for one-click deployment on [Render](https://render.c
 ## Troubleshooting
 
 ### Database Connection Error
-- Ensure PostgreSQL Server is running
-- Verify `DATABASE_URL` environment variable or credentials in `app.py`
-- Check database name is `ezasekasi_db`
-- Run the schema from `database_postgresql.sql`
+- Ensure `DATABASE_URL` environment variable is set (in Render dashboard or `.env` file)
+- For Neon, the connection string must include `?sslmode=require`
+- Visit `/health-db` on your deployed app to check the connection status
+- Try **Manual Deploy** on Render after setting env vars
 
 ### Module Import Errors
 - Ensure virtual environment is activated

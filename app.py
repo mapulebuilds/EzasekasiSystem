@@ -7,12 +7,17 @@ import csv
 import io
 import os
 import time
-from urllib.parse import urlparse
 from reportlab.lib.pagesizes import letter, A4
 from reportlab.lib import colors
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Paragraph, Spacer, PageBreak, HRFlowable
 from reportlab.lib.units import inch
+
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'tut_secret_key_2026')
@@ -21,23 +26,11 @@ app.secret_key = os.environ.get('SECRET_KEY', 'tut_secret_key_2026')
 def get_db_connection():
     try:
         db_url = os.environ.get('DATABASE_URL')
-        if db_url:
-            parsed = urlparse(db_url)
-            return psycopg2.connect(
-                host=parsed.hostname,
-                port=parsed.port or 5432,
-                user=parsed.username,
-                password=parsed.password,
-                database=parsed.path.lstrip('/')
-            )
-        else:
-            return psycopg2.connect(
-                host="127.0.0.1",
-                port=5432,
-                user="postgres",
-                password="Njabu@08",
-                database="ezasekasi_db"
-            )
+        if not db_url:
+            print("DATABASE_URL is not set")
+            return None
+        conn = psycopg2.connect(db_url)
+        return conn
     except psycopg2.Error as err:
         print(f"DATABASE ERROR: {err}")
         return None
@@ -2045,24 +2038,27 @@ def seed_database():
     finally:
         conn.close()
 
-# --- DEBUG: Check database status ---
-@app.route('/debug-db')
-def debug_db():
-    import traceback
-    result = []
+# --- HEALTH / DEBUG ROUTE ---
+@app.route('/health-db')
+def health_db():
+    has_url = os.environ.get('DATABASE_URL') is not None
+    if not has_url:
+        return "<h3>Status: DATABASE_URL not set</h3>"
+
+    conn = get_db_connection()
+    if conn is None:
+        return "<h3>Status: Database connection failed</h3>"
+
     try:
-        conn = get_db_connection()
-        if conn is None:
-            return "<h2>DB: Connection failed</h2><pre>DATABASE_URL set: " + str(os.environ.get('DATABASE_URL') is not None) + "</pre>"
         cursor = conn.cursor()
         cursor.execute("SELECT table_name FROM information_schema.tables WHERE table_schema='public' ORDER BY table_name")
         tables = [row[0] for row in cursor.fetchall()]
         cursor.execute("SELECT count(*) FROM users")
         users_count = cursor.fetchone()[0]
         conn.close()
-        return f"<h2>DB OK</h2><p>Tables: {tables}</p><p>Users: {users_count}</p>"
+        return f"<h3>Status: Connected</h3><p>Tables: {tables}</p><p>Users: {users_count}</p>"
     except Exception as e:
-        return f"<h2>DB Error</h2><pre>{traceback.format_exc()}</pre>"
+        return f"<h3>Status: Error</h3><pre>{e}</pre>"
 
 # Run database setup at module level so gunicorn workers also initialize
 seed_database()
